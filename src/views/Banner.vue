@@ -23,13 +23,6 @@ const  state = reactive({
 onMounted(async () => {
   const res = await getBanner();
   state.imageUrl = res.data.banners
-  console.log(state.imageUrl);
-  
-  // function test(...obj){
-  //   console.log(obj);
-    
-  // }
-  // test("GET","abc")
 });
 </script>
 <style lang='less' scoped>
@@ -44,7 +37,7 @@ onMounted(async () => {
       max-height: 100%;
     }
   }
-  .van-swipe__indicators {
+  /deep/.van-swipe__indicators {
     left: 20%;
   }
 }

@@ -3,6 +3,7 @@
   <div>
     <Home />
     <router-view></router-view>
+    <!-- <SvgIcon iconName="ca"></SvgIcon> -->
   </div>
 </template>
 <script setup lang="ts">

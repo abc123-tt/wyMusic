@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div style="padding-bottom:50px">aaa</div>
+    <div>
+      
+    </div>
   </div>
 </template>
 <script setup lang='ts'>
