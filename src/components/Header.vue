@@ -22,7 +22,7 @@
         </template>
         <!-- 听歌识曲Icon -->
         <template #songIcon>
-          <SvgIcon class="songSvg" iconName="songIcon"></SvgIcon>
+          <svg-icon class="songSvg" iconName="songIcon"></svg-icon>
         </template>
       </SearchVue>
     </header>
@@ -47,9 +47,9 @@
 <script setup lang='ts'>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import SearchVue from "../../views/SearchCom.vue";
-import BannerVue from "../../views/Banner.vue";
-import FasteEnterVue from "../../views/FastEnter.vue";
+import SearchVue from "../views/SearchCom.vue";
+import BannerVue from "../views/Banner.vue";
+import FasteEnterVue from "../views/FastEnter.vue";
 // 搜索关键字存储
 const searchValue = ref("");
 // 个人中心抽屉的显示
@@ -76,14 +76,12 @@ const toSearch = ()=>{
     justify-content: space-around;
     align-items: center;
     margin-bottom: 15px;
-    background-color: #c02532;
-    padding: 10px;
-    .songIcon {
-      width: 5.667vw;
-    }
+    background-color: #da4036;
+    padding: 10px 15px;
+    
     .search-input {
       background-color: transparent;
-      font-size: 1.6vw;
+      font-size: .1rem;
       width: 100%;
       padding: 0;
       margin: 0 10px;
@@ -97,12 +95,11 @@ const toSearch = ()=>{
     }
   }
   main,footer{
-    padding:0 10px;
+    padding:0 15px;
   }
   .songSvg{
     width: .8rem;
     height: .8rem;
-    color: #fff;
   }
 }
 </style>

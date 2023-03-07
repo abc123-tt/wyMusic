@@ -1,8 +1,9 @@
 import service from './index'
-
-export function getBanner(){
+// 获取数据函数
+export function getAPIdata(...obj){
   return service({
-    method:"GET",
-    url:"/banner?type=2",
+    method:obj[0],
+    url:obj[1],
+    data:obj[2]
   })
 }

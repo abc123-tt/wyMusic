@@ -5,7 +5,8 @@ import  {
   Popup,
   Overlay,
   Swipe,
-  SwipeItem
+  SwipeItem,
+  ActionSheet 
 }  from 'vant';
 
 let plugins = [
@@ -14,7 +15,8 @@ let plugins = [
   Popup,
   Overlay,
   Swipe,
-  SwipeItem
+  SwipeItem,
+  ActionSheet 
 ]
 // 将app传进来之前要先暴露函数
 export default function getVant(app){

@@ -3,7 +3,7 @@
 
     <SearchVue>
       <template #menuBtn>
-        <font-awesome-icon icon="arrow-left" />
+        <font-awesome-icon class="leftIcon" icon="arrow-left" />
       </template>
     </SearchVue>
 
@@ -13,4 +13,5 @@
 import SearchVue from "../views/SearchCom.vue";
 </script>
 <style lang='less'>
+
 </style>

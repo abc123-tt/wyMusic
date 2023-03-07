@@ -15,15 +15,16 @@
 </template>
 <script setup lang='ts'>
 import { onMounted,reactive} from "@vue/runtime-core";
-import { getBanner } from "../server/api";
+import { getAPIdata } from "../server/api";
 // 因为使用常量无法赋值，使用reactive是一个响应式操作，不会影响原来的地址
 const  state = reactive({
   imageUrl:[]
 })
 onMounted(async () => {
-  const res = await getBanner();
+  const res = await getAPIdata("GET","/banner?type=2");
   state.imageUrl = res.data.banners
 });
+
 </script>
 <style lang='less' scoped>
 .my-swipe {

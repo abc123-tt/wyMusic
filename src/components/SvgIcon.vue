@@ -1,5 +1,5 @@
 <template>
-  <svg :class="svgIcon">
+  <svg :class="SvgIcon">
     <use :href="'#icon-'+iconName"></use>
   </svg>
 </template>
@@ -7,15 +7,12 @@
 //  定义当前这个组件所需要的props 
 defineProps<{
   iconName:string,
-  svgIcon:{
+  SvgIcon:{
     type:string,
-    defind:()=>'icon-svg'
+    default:''
   }
 }>()
 </script>
 <style lang='less'>
- .icon-svg{
-  width: 100px;
-  height: 20px;
- }
+ 
 </style>
