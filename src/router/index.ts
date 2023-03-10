@@ -6,12 +6,17 @@ const routes = [
   {
     path:"/",
     name:"home",
-    component:()=>import("../components/Home/Home.vue")
+    component:()=>import("../components/Home/Home.vue"),
+   
   },
   {
     path:"/search",
     // 路由懒加载，会进行代码分割，不会打包到一起
     component:()=>import("../components/SearchPage.vue")
+  },
+  {
+    path:'/detail',
+    component:()=>import('../views/ListDetail.vue')
   }
 ]
 

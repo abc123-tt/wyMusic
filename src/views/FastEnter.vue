@@ -53,7 +53,7 @@
 <style lang='less'>
 .fast {
   display: flex;
-  margin: 18px 0 30px 0;
+  margin: 18px 0 25px 0;
   justify-content: space-around;
   width: 100%;
   .icon-item {

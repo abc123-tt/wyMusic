@@ -6,8 +6,10 @@ import {
   faRankingStar,
   faBookBookmark,
   faAngleRight,
-  faEllipsisVertical
+  faEllipsisVertical,
+  faPlay,
  } from '@fortawesome/free-solid-svg-icons'
+
 
  let plugins = [
   faArrowLeft,
@@ -17,7 +19,8 @@ import {
   faRankingStar,
   faBookBookmark,
   faAngleRight,
-  faEllipsisVertical
+  faEllipsisVertical,
+  faPlay,
  ]
 
  export default function getFontIcon(tool){

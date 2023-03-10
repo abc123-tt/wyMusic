@@ -5,7 +5,7 @@
       :autoplay="3000"
       indicator-color="white"
     >
-      <van-swipe-item v-for="item in state.imageUrl"><img
+      <van-swipe-item v-for="(item,index) in state.imageUrl" :key="index"><img
           :src="item.pic"
           alt=""
         ></van-swipe-item>
@@ -18,7 +18,7 @@ import { onMounted,reactive} from "@vue/runtime-core";
 import { getAPIdata } from "../server/api";
 // 因为使用常量无法赋值，使用reactive是一个响应式操作，不会影响原来的地址
 const  state = reactive({
-  imageUrl:[]
+  imageUrl:[] as any
 })
 onMounted(async () => {
   const res = await getAPIdata("GET","/banner?type=2");
