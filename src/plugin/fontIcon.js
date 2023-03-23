@@ -8,6 +8,7 @@ import {
   faAngleRight,
   faEllipsisVertical,
   faPlay,
+  faArrowDown
  } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -21,6 +22,7 @@ import {
   faAngleRight,
   faEllipsisVertical,
   faPlay,
+  faArrowDown
  ]
 
  export default function getFontIcon(tool){

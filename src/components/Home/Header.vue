@@ -47,9 +47,9 @@
 <script setup lang='ts'>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import SearchVue from "../views/SearchCom.vue";
-import BannerVue from "../views/Banner.vue";
-import FasteEnterVue from "../views/FastEnter.vue";
+import SearchVue from "../../views/SearchCom.vue";
+import BannerVue from "../../views/Banner.vue";
+import FasteEnterVue from "../../views/FastEnter.vue";
 // 搜索关键字存储
 const searchValue = ref("");
 // 个人中心抽屉的显示
@@ -75,18 +75,18 @@ const toSearch = ()=>{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: .25rem;
     background-color: #da4036;
-    padding: 10px 15px;
+    padding: .2rem .25rem;
     
     .search-input {
       background-color: transparent;
       font-size: .1rem;
       width: 100%;
       padding: 0;
-      margin: 0 10px;
+      margin: 0 .2rem;
       .van-search__content {
-        border-radius: 25px !important;
+        border-radius: .4rem !important;
         color: #666;
         ::placeholder {
           color: #999;
@@ -95,7 +95,7 @@ const toSearch = ()=>{
     }
   }
   main,footer{
-    padding:0 15px;
+    padding:0 .25rem;
   }
   .songSvg{
     width: .8rem;

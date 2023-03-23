@@ -12,15 +12,17 @@ import SvgIcon from './components/SvgIcon.vue'
 import 'virtual:svg-icons-register'
 
 
-
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+library.add(fas, far, fab)
 
 // 引入font-awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
  
 const app = createApp(App)
 app.config.warnHandler = () => null
-
 
 
 //使用font-awesome
@@ -33,5 +35,7 @@ getVant(app)
 app.use(router)
 app.component('svg-icon',SvgIcon)
 app.component('font-awesome-icon',FontAwesomeIcon)
+app.component('font-awesome-layers', FontAwesomeLayers)
+app.component('font-awesome-layers-text', FontAwesomeLayersText)
 // 这个挂载必须放在最后
 app.mount('#app')

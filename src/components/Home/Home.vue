@@ -1,15 +1,28 @@
 <template>
-  <div class="home-box">
-    <HeaderVue></HeaderVue>
-    <Context></Context>
-    <Footer></Footer>
+  <div class="app">
+    <router-view></router-view>
+    <div class="bottom-box">
+      <div class="playCom">
+        <PlayVue></PlayVue>
+      </div>
+      <div class="footer">
+        <FooterVue></FooterVue>
+      </div>
+    </div>
   </div>
 </template>
-<script setup lang='ts'>
-import HeaderVue from '../Header.vue'
-import Context from '../Context.vue';
-import Footer from '../Footer.vue';
+<script setup lang="ts">
+import FooterVue from "./Footer.vue";
+import PlayVue from "../item/Play.vue";
 </script>
-<style lang='less' scoped>
-
+<style lang="less" scoped>
+.app{
+  position:relative;
+}
+.bottom-box{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
 </style>

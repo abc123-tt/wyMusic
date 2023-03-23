@@ -1,6 +1,6 @@
 <template>
   <div>
-    歌单详情
+    Mine
   </div>
 </template>
 <script setup lang='ts'>

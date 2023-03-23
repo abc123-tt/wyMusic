@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup lang='ts'>
-import SearchVue from "../views/SearchCom.vue";
+import SearchVue from "../../views/SearchCom.vue";
 </script>
 <style lang='less'>
 
