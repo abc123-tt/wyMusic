@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <ul class="footerlist">
+    <PlayVue></PlayVue>
+    <ul class="footerlist" v-if="show">
       <li
         class="listItem"
         v-for="(item, index) in data.itemData"
@@ -19,9 +20,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref,defineProps } from "vue";
+import PlayVue from "../item/Play.vue";
 import {useRouter} from 'vue-router'
 const router = useRouter()
+
+// 设置props对象
+defineProps({
+  show:{
+    type: Boolean,
+    default: false
+  }
+})
 const data = reactive({
   itemData: [
     {

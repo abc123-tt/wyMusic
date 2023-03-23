@@ -37,7 +37,6 @@
 
     <div class="playCom">
       <PlayVue></PlayVue>
-
     </div>
   </div>
 </template>
