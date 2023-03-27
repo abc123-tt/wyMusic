@@ -17,7 +17,6 @@ const route = useRoute();
   left: 0;
   bottom: 0;
   width: 100%;
-  
 }
 .defStyle {
   position: fixed;

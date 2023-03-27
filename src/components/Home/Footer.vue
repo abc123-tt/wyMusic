@@ -63,9 +63,6 @@ const data = reactive({
 );
 const flag = ref<Number>(0);
 const changeItem = (i,str) => {
-  console.log(route.name);
-  
-  
   flag.value = i;
   if(str == '发现'){
     router.push('/discovry')

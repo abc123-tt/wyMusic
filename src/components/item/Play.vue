@@ -36,7 +36,7 @@
   ></audio>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useStore } from "../../store/index";
 const store = useStore();
 
@@ -45,14 +45,19 @@ const isPlay = ref<boolean>(true);
 const audio = ref();
 const playSong = () => {
   isPlay.value = !isPlay.value;
-  
   if (audio.value.paused) {
     audio.value.play();
   } else {
     audio.value.pause();
   }
 };
-
+// 监听对象中某个属性要把它变为一个函数
+watch(()=>store.defaultSong.id,()=>{
+  // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
+  audio.value.autoplay = true
+  isPlay.value = false;
+  
+})
 onMounted(() => {});
 </script>
 <style lang="less" scoped>

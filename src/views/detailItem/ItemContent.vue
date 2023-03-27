@@ -24,7 +24,7 @@
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
-              <!-- <span v-if="item.free = 1" class="vip">VIP</span> -->
+              <span v-if="item.free = 1" class="vip">VIP</span>
               <span
                 class="singer"
                 v-for="(singerName, index) in item.ar"
@@ -75,7 +75,6 @@ const playSong = (item) => {
   store.setSong(item)
   item.ar.forEach(ele => {
     store.defaultSong.singerName = ele.name
-    
   });
 
 };
