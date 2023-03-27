@@ -14,6 +14,6 @@
     "noEmit": true,
     "noImplicitAny":false
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/plugin/vant.js", "src/plugin/vant.js"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/plugin/vant.js", "src/plugin/vant.js", "src/server/api.js", "src/server/index.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

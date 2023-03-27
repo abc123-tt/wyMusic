@@ -11,22 +11,27 @@ const routes = [
     children:[
       {
         path:'discovry',
+        name:'discovry',
         component:()=>import("../components/Discovry.vue")
       },
       {
         path:'podcast',
+        name:'podcast',
         component:()=>import('../components/Podcast.vue')
       },
       {
         path:'mine',
+        name:'mine',
         component:()=>import('../components/Mine.vue')
       },
       {
         path:'attention',
+        name:'attention',
         component:()=>import('../components/Attention.vue')
       },
       {
         path:'community',
+        name:'community',
         component:()=>import('../components/Community.vue')
       },
     ]
@@ -38,6 +43,7 @@ const routes = [
   },
   {
     path:'/detail',
+    name:'detail',
     component:()=>import('../views/MusicDetail.vue')
   },
  

@@ -1,6 +1,5 @@
 <template>
   <div class="content">
-    <PlayVue></PlayVue>
     <ul class="footerlist" >
       <li
         class="listItem"
@@ -21,16 +20,16 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref,defineProps } from "vue";
-import PlayVue from "../item/Play.vue";
-import {useRouter} from 'vue-router'
+import {useRouter,useRoute} from 'vue-router'
 const router = useRouter()
+const route = useRoute()
 // 设置props对象
-defineProps({
-  isBottom:{
-    type: Boolean,
-    default: false
-  }
-})
+// defineProps({
+//   isBottom:{
+//     type: Boolean,
+//     default: false
+//   }
+// })
 const data = reactive({
   itemData: [
     {
@@ -64,7 +63,9 @@ const data = reactive({
 );
 const flag = ref<Number>(0);
 const changeItem = (i,str) => {
-
+  console.log(route.name);
+  
+  
   flag.value = i;
   if(str == '发现'){
     router.push('/discovry')

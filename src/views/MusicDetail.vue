@@ -34,10 +34,6 @@
     <!-- 歌单详情头部信息 -->
     <ItemTopVue :playList="songData.musicList"></ItemTopVue>
     <ItemContentVue :playList="songData.musicList"></ItemContentVue>
-
-    <div class="playCom">
-      <PlayVue></PlayVue>
-    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -47,7 +43,6 @@ import { getAPIdata } from "../server/api";
 import ItemTopVue from "./detailItem/ItemTop.vue";
 import ItemContentVue from "./detailItem/ItemContent.vue";
 import SearchVue from "./SearchCom.vue";
-import PlayVue from "../components/item/Play.vue";
 
 const router = useRouter();
 
@@ -92,9 +87,9 @@ const back = () => {
     left: 0;
     filter: blur(0.8rem);
   }
-  .playCom{
-    width:100%;
-    position:fixed;
+  .playCom {
+    width: 100%;
+    position: fixed;
     bottom: 0;
   }
 }

@@ -24,7 +24,8 @@
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
-              <span v-if="item.free = 1" class="vip">VIP</span><span
+              <!-- <span v-if="item.free = 1" class="vip">VIP</span> -->
+              <span
                 class="singer"
                 v-for="(singerName, index) in item.ar"
                 :key="index"
@@ -133,12 +134,15 @@ onMounted(() => {
   }
   // 歌曲列表
   .list-box {
-    
+    ul{
+      padding-bottom:1.2rem;
+    }
     .listItem {
       display: flex;
       padding: 0.3rem 0;
       align-items: center;
       justify-content: space-between;
+
       .song-left{
         display: flex;
         width: 80%;

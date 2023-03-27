@@ -66,7 +66,6 @@ onMounted(() => {});
   height: 1.2rem;
   border-top: 0.5px solid #eee;
   background: rgba(255, 255, 255, 0.9);
-
   .play-left {
     display: flex;
     align-items: center;
