@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "gsap": "^3.11.4",
+    "pinia": "^2.0.33",
     "vant": "^4.0.11",
     "vue": "^3.2.45"
   },

@@ -19,4 +19,9 @@ export default defineConfig({
       symbolId:'icon-[name]'
     })
   ],
-}) 
+},
+) 
+
+
+
+

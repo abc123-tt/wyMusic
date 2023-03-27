@@ -1,10 +1,8 @@
 <template>
-  <div class="app">
+  <div>
     <router-view></router-view>
     <div class="bottom-box">
-      <div class="footer">
-        <FooterVue :show="true"></FooterVue>
-      </div>
+      <FooterVue :isBottom="true"></FooterVue>
     </div>
   </div>
 </template>
@@ -12,9 +10,6 @@
 import FooterVue from "./Footer.vue";
 </script>
 <style lang="less" scoped>
-.app {
-  position: relative;
-}
 .bottom-box {
   width: 100%;
   position: fixed;

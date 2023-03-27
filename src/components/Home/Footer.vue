@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <PlayVue></PlayVue>
-    <ul class="footerlist" v-if="show">
+    <ul class="footerlist" >
       <li
         class="listItem"
         v-for="(item, index) in data.itemData"
@@ -24,10 +24,9 @@ import { reactive, ref,defineProps } from "vue";
 import PlayVue from "../item/Play.vue";
 import {useRouter} from 'vue-router'
 const router = useRouter()
-
 // 设置props对象
 defineProps({
-  show:{
+  isBottom:{
     type: Boolean,
     default: false
   }
@@ -65,6 +64,7 @@ const data = reactive({
 );
 const flag = ref<Number>(0);
 const changeItem = (i,str) => {
+
   flag.value = i;
   if(str == '发现'){
     router.push('/discovry')
@@ -89,6 +89,7 @@ const changeItem = (i,str) => {
   position: fixed;
   bottom: 0;
   left: 0;
+  background-color: #fff;
   .footerlist {
     display: flex;
     justify-content: space-around;
@@ -109,6 +110,7 @@ const changeItem = (i,str) => {
         align-items: center;
         .itemIcon {
           width: 0.65rem;
+          height: .65rem;
         }
       }
       .active {

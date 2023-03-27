@@ -100,8 +100,6 @@ onMounted(async () => {
       item.playCount = (item.playCount / 10000).toFixed(1) + "万";
     }
   });
-  console.log(data.musicList);
-  
 });
 </script>
 <style lang='less' scoped>

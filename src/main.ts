@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+const app = createApp(App)
 import './style.css'
 import App from './App.vue'
 import router from './router'
@@ -11,6 +12,11 @@ import SvgIcon from './components/SvgIcon.vue'
 // 注册svg解析脚本
 import 'virtual:svg-icons-register'
 
+// 引入pinia
+import {createPinia} from 'pinia'
+const store = createPinia()
+app.use(store)
+
 
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
@@ -20,8 +26,7 @@ library.add(fas, far, fab)
 // 引入font-awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
- 
-const app = createApp(App)
+
 app.config.warnHandler = () => null
 
 
