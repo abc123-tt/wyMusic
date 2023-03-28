@@ -44,6 +44,8 @@ const store = useStore();
 const isPlay = ref<boolean>(true);
 const audio = ref();
 const playSong = () => {
+  console.log(audio);
+  
   isPlay.value = !isPlay.value;
   if (audio.value.paused) {
     audio.value.play();
@@ -56,8 +58,8 @@ watch(()=>store.defaultSong.id,()=>{
   // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
   audio.value.autoplay = true
   isPlay.value = false;
-  
 })
+// 监听歌曲是否播放完
 onMounted(() => {});
 </script>
 <style lang="less" scoped>

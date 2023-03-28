@@ -1,17 +1,21 @@
 <template>
   <div class="music-list">
-    <div class="listTitle">
-      <div class="playAll">
-        <van-icon class="playIcon" name="play-circle"  @click="allPlay"/>
-        <b
-          >播放全部 <span>({{ songList.songs.length }})</span></b
-        >
+    <van-sticky positioon="bottom" :offset-top="props.isTop?'49.5':'0'">
+      <div class="listTitle">
+        <div class="playAll">
+          <van-icon class="playIcon" name="play-circle" @click="allPlay" />
+          <b
+            >播放全部 <span>({{ songList.songs.length }})</span></b
+          >
+        </div>
+        <div class="downLoad">
+          <van-icon class="down-icon" name="down" />
+          <font-awesome-icon icon="fa-list-check"></font-awesome-icon>
+        </div>
       </div>
-      <div class="downLoad">
-        <van-icon class="down-icon" name="down" />
-        <font-awesome-icon icon="fa-list-check"></font-awesome-icon>
-      </div>
-    </div>
+    </van-sticky>
+    
+
     <!-- 歌曲列表 -->
     <div class="list-box">
       <ul>
@@ -24,7 +28,7 @@
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
-              <span v-if="item.free = 1" class="vip">VIP</span>
+              <!-- <span v-if="(item.free = 1)" class="vip">VIP</span> -->
               <span
                 class="singer"
                 v-for="(singerName, index) in item.ar"
@@ -46,20 +50,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive,defineProps } from "vue";
 import { getAPIdata } from "../../server/api";
 import { useRoute } from "vue-router";
-import {useStore} from '../../store/index'
+import { useStore } from "../../store/index";
 
-const store = useStore()
+const store = useStore();
 const route = useRoute();
+
+
 
 // 歌曲数据
 const songList = reactive({
   songs: [] as any[],
 });
-defineProps<{
-  playList;
+// 获取父组件传过来的数据
+const props = defineProps<{
+  // playList;
+  // 控制播放全部的吸附的偏移值
+  isTop:any
 }>();
 const id = route.query.id;
 // 获取歌曲数据
@@ -67,21 +76,19 @@ const getData = async () => {
   const res = await getAPIdata("GET", `/playlist/track/all?id=${id}&limit=30`);
   songList.songs = res.data.songs;
   console.log(songList.songs);
-  
 };
 
 // 播放单首歌曲
 const playSong = (item) => {
-  store.setSong(item)
-  item.ar.forEach(ele => {
-    store.defaultSong.singerName = ele.name
+  store.setSong(item);
+  item.ar.forEach((ele) => {
+    store.defaultSong.singerName = ele.name;
   });
-
 };
 // 播放所有歌曲
-const allPlay = ()=>{
-  store.setAllSongs(songList.songs)
-}
+const allPlay = () => {
+  store.setAllSongs(songList.songs);
+};
 
 onMounted(() => {
   getData();
@@ -89,19 +96,15 @@ onMounted(() => {
 </script>
 <style lang="less" scoped>
 .music-list {
-  height: 10rem;
-  width: 100%;
-  background-color: #fff;
-  margin-top: 0.2rem;
-  border-radius: 0.3rem 0.3rem 0 0;
-  padding: 0.4rem 0.3rem;
-  box-sizing: border-box;
   // 歌曲列表的头部
   .listTitle {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.2rem;
+    padding:0.4rem 0.28rem;
+    background-color: #fff;
+    border-radius: 0.3rem 0.3rem 0 0;
+
     .playAll {
       display: flex;
       align-items: center;
@@ -133,34 +136,38 @@ onMounted(() => {
   }
   // 歌曲列表
   .list-box {
+    padding:.3rem 0.3rem;
+    background-color: #fff;
     ul{
-      padding-bottom:1.2rem;
+      padding-bottom:.8rem;
     }
     .listItem {
       display: flex;
       padding: 0.3rem 0;
       align-items: center;
       justify-content: space-between;
-
-      .song-left{
+      
+      .song-left {
         display: flex;
         width: 80%;
-        align-items:center;
+        align-items: center;
       }
       .listId {
-        margin: 0 0.5rem 0 0.15rem;
         font-size: 0.35rem;
         color: #999;
+        width:8%;
+        text-align: center;
+        margin-right: .25rem;
       }
       .songName-box {
         width: 70%;
-        .vip{
-          display:inline-block;
-          border-radius: .1rem;
-          border:1px solid #fc473c;
+        .vip {
+          display: inline-block;
+          border-radius: 0.1rem;
+          border: 1px solid #fc473c;
           font-size: 10px;
           color: #fc473c;
-          margin-right:.1rem;
+          margin-right: 0.1rem;
         }
         .songName {
           font-size: 0.38rem;
@@ -168,6 +175,7 @@ onMounted(() => {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+
         }
         .singer {
           color: #999;

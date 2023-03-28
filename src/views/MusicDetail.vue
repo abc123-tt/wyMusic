@@ -4,7 +4,7 @@
     <img :src="songData.musicList.coverImgUrl" alt="" class="bgPic" />
     <!-- 歌单头部 -->
     <van-sticky position="top">
-      <header class="header">
+      <header class="header" :class="[isChange?'changebgc':'']">
         <SearchVue class="tit">
           <template #menuBtn>
             <font-awesome-icon
@@ -24,7 +24,7 @@
                 <van-icon name="search" />
               </span>
               <span>
-                <font-awesome-icon icon="ellipsis-vertical"></font-awesome-icon>
+                <font-awesome-icon class="ellipsis-icon" icon="ellipsis-vertical"></font-awesome-icon>
               </span>
             </div>
           </template>
@@ -33,11 +33,11 @@
     </van-sticky>
     <!-- 歌单详情头部信息 -->
     <ItemTopVue :playList="songData.musicList"></ItemTopVue>
-    <ItemContentVue :playList="songData.musicList"></ItemContentVue>
+    <ItemContentVue :playList="songData.musicList" :isTop="isChange"></ItemContentVue>
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive } from "@vue/runtime-core";
+import { onMounted, reactive,ref } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { getAPIdata } from "../server/api";
 import ItemTopVue from "./detailItem/ItemTop.vue";
@@ -49,6 +49,27 @@ const router = useRouter();
 const songData = reactive({
   musicList: [] as any,
 });
+
+// 控制滚动时顶部导航背景颜色的切换
+const isChange = ref<Boolean>(false)
+// 监听屏幕滚动
+const handleScroll = () => {
+  let scrollTop =
+    window.pageYOffset ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop;
+  if(scrollTop>=300){
+    isChange.value = true
+  }else{
+    isChange.value = false
+  }
+};
+
+// 后退函数
+const back = () => {
+  router.go(-1);
+};
+
 onMounted(async () => {
   // 获取接口数据
   const {
@@ -58,21 +79,8 @@ onMounted(async () => {
   songData.musicList = res.data.playlist;
 
   // 监听屏幕滚动
-  // window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", handleScroll);
 });
-// 监听屏幕滚动
-// const handleScroll = () => {
-//   let scorllTop =
-//     window.pageYOffset ||
-//     document.documentElement.scrollTop ||
-//     document.body.scrollTop;
-//   console.log(scorllTop);
-// };
-
-// 后退函数
-const back = () => {
-  router.go(-1);
-};
 </script>
 <style lang="less" scoped>
 .content {
@@ -94,8 +102,7 @@ const back = () => {
   }
 }
 .header {
-  padding: 0.4rem 0.25rem;
-
+  padding: 0.35rem 0.35rem;
   .tit {
     display: flex;
     justify-content: space-between;
@@ -108,8 +115,17 @@ const back = () => {
   .right-icon {
     margin-left: auto;
     .van-icon {
-      margin-right: 0.6rem;
+      margin-right: 0.8rem;
+      font-size: .6rem;
+    }
+    .ellipsis-icon{
+      font-size: .6rem;
+      margin-right: .3rem;
     }
   }
+}
+.changebgc{
+  background-color: #fc473c;
+  transition: all .2s ease-in;
 }
 </style>
