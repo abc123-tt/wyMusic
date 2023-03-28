@@ -102,7 +102,7 @@ onMounted(async () => {
   }
 }
 .header {
-  padding: 0.35rem 0.35rem;
+  padding: 0.35rem 0.45rem;
   .tit {
     display: flex;
     justify-content: space-between;
@@ -120,7 +120,7 @@ onMounted(async () => {
     }
     .ellipsis-icon{
       font-size: .6rem;
-      margin-right: .3rem;
+      // margin-right: .3rem;
     }
   }
 }

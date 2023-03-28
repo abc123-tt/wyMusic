@@ -58,8 +58,6 @@ import { useStore } from "../../store/index";
 const store = useStore();
 const route = useRoute();
 
-
-
 // 歌曲数据
 const songList = reactive({
   songs: [] as any[],

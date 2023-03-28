@@ -32,6 +32,7 @@
   </div>
   <audio
     ref="audio"
+    @ended="onEnded"
     :src="`https://music.163.com/song/media/outer/url?id=${store.defaultSong.id}.mp3`"
   ></audio>
 </template>
@@ -60,6 +61,9 @@ watch(()=>store.defaultSong.id,()=>{
   isPlay.value = false;
 })
 // 监听歌曲是否播放完
+const onEnded = ()=>{
+  isPlay.value = true;
+}
 onMounted(() => {});
 </script>
 <style lang="less" scoped>

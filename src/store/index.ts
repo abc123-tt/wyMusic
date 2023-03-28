@@ -28,8 +28,6 @@ export const useStore = defineStore(StoreData.STORE, {
     },
     setAllSongs(list){
       this.playlist = list
-      
-      
     }
   }
 
