@@ -5,13 +5,10 @@
         <img :src="store.defaultSong.picUrl" alt="" />
       </div>
       <div class="songInfo">
-        <span
+        <span> {{ store.defaultSong.name }}</span>
+        <span class="singerName">
+          <span class="heng">-</span>{{ store.defaultSong.singerName }}</span
         >
-        {{
-          store.defaultSong.name
-        }}</span
-      >
-      <span class="singerName"> <span class="heng">-</span>{{ store.defaultSong.singerName }}</span>
       </div>
     </div>
     <div class="play-right">
@@ -33,6 +30,7 @@
   <audio
     ref="audio"
     @ended="onEnded"
+    controls
     :src="`https://music.163.com/song/media/outer/url?id=${store.defaultSong.id}.mp3`"
   ></audio>
 </template>
@@ -45,26 +43,34 @@ const store = useStore();
 const isPlay = ref<boolean>(true);
 const audio = ref();
 const playSong = () => {
-  console.log(audio);
-  
   isPlay.value = !isPlay.value;
   if (audio.value.paused) {
-    audio.value.play();
+    audio.value.play()
   } else {
     audio.value.pause();
   }
 };
 // 监听对象中某个属性要把它变为一个函数
-watch(()=>store.defaultSong.id,()=>{
-  // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
-  audio.value.autoplay = true
-  isPlay.value = false;
-})
+watch(
+  () => store.defaultSong.id,
+  () => {
+    // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
+    audio.value.autoplay = true;
+    isPlay.value = false;
+  }
+);
 // 监听歌曲是否播放完
-const onEnded = ()=>{
+const onEnded = () => {
   isPlay.value = true;
-}
-onMounted(() => {});
+  console.log('start');
+    store.playNext()
+  console.log('end');
+  isPlay.value = false;
+};
+onMounted(() => {
+
+  
+});
 </script>
 <style lang="less" scoped>
 .play-box {
@@ -105,12 +111,11 @@ onMounted(() => {});
         border-radius: 50%;
       }
     }
-    .singerName{
-      color:#999;
-      font-size: .28rem;
-      .heng{
-        margin:0 .1rem;
-        
+    .singerName {
+      color: #999;
+      font-size: 0.28rem;
+      .heng {
+        margin: 0 0.1rem;
       }
     }
   }

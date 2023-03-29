@@ -24,11 +24,11 @@
           v-for="(item, index) in songList.songs"
           :key="item.id"
         >
-          <div class="song-left" @click="playSong(item)">
+          <div class="song-left" @click="playSong(songList.songs,index+1)">
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
-              <!-- <span v-if="(item.free = 1)" class="vip">VIP</span> -->
+              <span v-if="(item.fee = 1)" class="vip">VIP</span>
               <span
                 class="singer"
                 v-for="(singerName, index) in item.ar"
@@ -57,7 +57,8 @@ import { useStore } from "../../store/index";
 
 const store = useStore();
 const route = useRoute();
-
+// let currentSongIndex = ref(0)
+// let activeAllPlay = ref<boolean>(false)
 // 歌曲数据
 const songList = reactive({
   songs: [] as any[],
@@ -77,15 +78,16 @@ const getData = async () => {
 };
 
 // 播放单首歌曲
-const playSong = (item) => {
-  store.setSong(item);
-  item.ar.forEach((ele) => {
+const playSong = (item:any,index:number) => {
+  store.setSong(item,index);
+  item[index-1].ar.forEach((ele) => {
     store.defaultSong.singerName = ele.name;
   });
 };
 // 播放所有歌曲
 const allPlay = () => {
   store.setAllSongs(songList.songs);
+  store.play()
 };
 
 onMounted(() => {
@@ -137,7 +139,7 @@ onMounted(() => {
     padding:.3rem 0.3rem;
     background-color: #fff;
     ul{
-      padding-bottom:.8rem;
+      padding-bottom:2.8rem;
     }
     .listItem {
       display: flex;

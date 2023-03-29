@@ -62,6 +62,8 @@
 import { ref, onMounted, reactive } from "vue";
 import { getAPIdata } from "../../server/api.js";
 import { useRouter } from "vue-router";
+import { useStore } from "../../store";
+const store = useStore()
 const router = useRouter();
 // 推荐歌单的三个点
 let moreBtn = ref(false);
@@ -80,6 +82,7 @@ let data = reactive({
 });
 
 const listDetail = (id) => {
+  store.currentSongIndex = 0
   router.push({
     path: "/detail",
     query: {
