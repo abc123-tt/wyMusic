@@ -1,15 +1,21 @@
 <template>
+ 
+
   <div>
+    <LoadingVue></LoadingVue>
     <router-view></router-view>
     <div :class="[route.name == 'detail'? 'musicPlay':'defStyle']">
       <PlayVue></PlayVue>
     </div>
   </div>
+
 </template>
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import PlayVue from "./components/item/Play.vue";
+import LoadingVue from './components/Home/Loading.vue'
 const route = useRoute();
+
 </script>
 <style scoped lang="less">
 .musicPlay {
@@ -24,4 +30,6 @@ const route = useRoute();
   bottom: 1.5rem;
   width: 100%;
   }
+
+  
 </style>

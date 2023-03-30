@@ -19,17 +19,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref,defineProps } from "vue";
-import {useRouter,useRoute} from 'vue-router'
+import { reactive, ref } from "vue";
+import {useRouter} from 'vue-router'
 const router = useRouter()
-const route = useRoute()
-// 设置props对象
-// defineProps({
-//   isBottom:{
-//     type: Boolean,
-//     default: false
-//   }
-// })
 const data = reactive({
   itemData: [
     {

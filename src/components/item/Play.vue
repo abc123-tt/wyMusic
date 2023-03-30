@@ -1,7 +1,7 @@
 <template>
   <div class="play-box">
     <div class="play-left">
-      <div class="songImg">
+      <div class="songImg" :class="[isRotate?'rotateImg':'']">
         <img :src="store.defaultSong.picUrl" alt="" />
       </div>
       <div class="songInfo">
@@ -35,19 +35,25 @@
   ></audio>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, watchEffect } from "vue";
 import { useStore } from "../../store/index";
 const store = useStore();
 
 // 控制音乐播放器的播放和暂停
 const isPlay = ref<boolean>(true);
 const audio = ref();
+// 是否旋转歌曲头像
+const isRotate = ref<boolean>(false)
+// 是否正在播放歌曲
+const isPlaying = ref(false)
 const playSong = () => {
   isPlay.value = !isPlay.value;
   if (audio.value.paused) {
     audio.value.play()
+    isRotate.value = true
   } else {
     audio.value.pause();
+    isRotate.value = false
   }
 };
 // 监听对象中某个属性要把它变为一个函数
@@ -57,14 +63,23 @@ watch(
     // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
     audio.value.autoplay = true;
     isPlay.value = false;
+    isRotate.value = true
   }
-);
+)
+watchEffect(()=>{
+//  if(audio.value){
+//    audio.value.addEventListener('playing',()=>{
+//     isPlaying.value = true
+//   })
+//   audio.value.addEventListener('pause',()=>{
+//     isPlaying.value = false
+//   })
+//  }
+})
 // 监听歌曲是否播放完
 const onEnded = () => {
   isPlay.value = true;
-  console.log('start');
     store.playNext()
-  console.log('end');
   isPlay.value = false;
 };
 onMounted(() => {
@@ -111,6 +126,10 @@ onMounted(() => {
         border-radius: 50%;
       }
     }
+    // 旋转头像
+    .rotateImg{
+      animation: spin 3s linear infinite;
+    }
     .singerName {
       color: #999;
       font-size: 0.28rem;
@@ -130,5 +149,14 @@ onMounted(() => {
       height: 0.5rem;
     }
   }
+}
+@keyframes spin {
+  0%{
+    transform:rotate(0deg)
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+  
 }
 </style>

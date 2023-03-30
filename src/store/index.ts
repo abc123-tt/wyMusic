@@ -14,7 +14,6 @@ export const useStore = defineStore(StoreData.STORE, {
     },
     playlist:[] as any,
     currentSongIndex:0,
-    playing:false
   }),
   // 类似computed: 修饰一些值
   getters: {
@@ -25,11 +24,11 @@ export const useStore = defineStore(StoreData.STORE, {
     // 不要写箭头函数，否则this的指向会错
     setSong(songsItem:any,index:number) {
       this.playlist = songsItem
-      this.currentSongIndex = index-1
-      this.defaultSong.id = songsItem[index-1].id
-      this.defaultSong.name = songsItem[index-1].name
-      this.defaultSong.picUrl = songsItem[index-1].al.picUrl
-      songsItem[index-1].ar.forEach((ele)=>{
+      this.currentSongIndex = index
+      this.defaultSong.id = songsItem[index].id
+      this.defaultSong.name = songsItem[index].name
+      this.defaultSong.picUrl = songsItem[index].al.picUrl
+      songsItem[index].ar.forEach((ele)=>{
         this.defaultSong.singerName = ele.name
       })
     },
@@ -39,6 +38,8 @@ export const useStore = defineStore(StoreData.STORE, {
     // 按顺序播放全部歌曲
     // 点击时应该从头开始播放？？
     play(){
+      console.log('play');
+      
       this.defaultSong.id  = this.playlist[this.currentSongIndex].id
       this.defaultSong.name = this.playlist[this.currentSongIndex].name
       this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl

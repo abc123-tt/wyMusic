@@ -33,6 +33,7 @@
     </van-sticky>
     <!-- 歌单详情头部信息 -->
     <ItemTopVue :playList="songData.musicList"></ItemTopVue>
+    <!-- 歌曲列表 -->
     <ItemContentVue :playList="songData.musicList" :isTop="isChange"></ItemContentVue>
   </div>
 </template>
@@ -90,7 +91,6 @@ onMounted(async () => {
     position: absolute;
     width: 100%;
     height: 8rem;
-
     top: 0;
     left: 0;
     filter: blur(0.8rem);

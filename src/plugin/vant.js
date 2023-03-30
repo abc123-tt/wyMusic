@@ -9,7 +9,8 @@ import  {
   ActionSheet,
   Sticky ,
   List,
-  Button
+  Button,
+  Loading
 }  from 'vant';
 
 let plugins = [
@@ -22,7 +23,8 @@ let plugins = [
   ActionSheet,
   Sticky ,
   List,
-  Button
+  Button,
+  Loading
 ]
 // 将app传进来之前要先暴露函数
 export default function getVant(app){
