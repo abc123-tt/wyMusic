@@ -6,13 +6,13 @@ const routes = [
   {
     path:"/",
     name:"home",
-    redirect:"/discovry",
+    redirect:"/discovery",
     component:()=>import("../components/Home/Home.vue"),
     children:[
       {
-        path:'discovry',
-        name:'discovry',
-        component:()=>import("../components/Discovry.vue")
+        path:'discovery',
+        name:'discovery',
+        component:()=>import("../components/Discovery.vue")
       },
       {
         path:'podcast',

@@ -1,6 +1,6 @@
 <template>
   <div class="play-box">
-    <div class="play-left">
+    <div class="play-left" @click="toLyric($router.push('/player'))">
       <div class="songImg" :class="[isRotate?'rotateImg':'']">
         <img :src="store.defaultSong.picUrl" alt="" />
       </div>
@@ -30,7 +30,7 @@
   <audio
     ref="audio"
     @ended="onEnded"
-    controls
+    
     :src="`https://music.163.com/song/media/outer/url?id=${store.defaultSong.id}.mp3`"
   ></audio>
 </template>
@@ -38,7 +38,6 @@
 import { onMounted, ref, watch, watchEffect } from "vue";
 import { useStore } from "../../store/index";
 const store = useStore();
-
 // 控制音乐播放器的播放和暂停
 const isPlay = ref<boolean>(true);
 const audio = ref();
@@ -50,12 +49,14 @@ const playSong = () => {
   isPlay.value = !isPlay.value;
   if (audio.value.paused) {
     audio.value.play()
-    isRotate.value = true
+    isRotate.value = !isRotate.value
   } else {
     audio.value.pause();
-    isRotate.value = false
+    isRotate.value = !isRotate.value
   }
 };
+
+
 // 监听对象中某个属性要把它变为一个函数
 watch(
   () => store.defaultSong.id,
@@ -128,7 +129,7 @@ onMounted(() => {
     }
     // 旋转头像
     .rotateImg{
-      animation: spin 3s linear infinite;
+      animation: spin 5s linear infinite;
     }
     .singerName {
       color: #999;

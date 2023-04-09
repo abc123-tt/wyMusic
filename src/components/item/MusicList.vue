@@ -78,7 +78,7 @@ const showMore = () => {
 
 // 推荐歌单数据存放处
 let data = reactive({
-  musicList: [] as any,
+  musicList: [],
 });
 
 const listDetail = (id) => {

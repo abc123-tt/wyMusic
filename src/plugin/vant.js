@@ -10,7 +10,11 @@ import  {
   Sticky ,
   List,
   Button,
-  Loading
+  Loading,
+  Tag,
+  Notify ,
+  Dialog ,
+  Toast 
 }  from 'vant';
 
 let plugins = [
@@ -24,7 +28,11 @@ let plugins = [
   Sticky ,
   List,
   Button,
-  Loading
+  Loading,
+  Tag,
+  Notify,
+  Dialog  ,
+  Toast 
 ]
 // 将app传进来之前要先暴露函数
 export default function getVant(app){

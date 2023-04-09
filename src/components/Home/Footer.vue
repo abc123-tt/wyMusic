@@ -1,13 +1,14 @@
 <template>
   <div class="content">
     <ul class="footerlist" >
-      <li
+      <keep-alive>
+        <li
         class="listItem"
         v-for="(item, index) in data.itemData"
         :key="index"
         @click="changeItem(index,item.tit)"
       >
-        <div :class="['icon-box', index === flag ? 'active' : '']">
+        <div :class="['icon-box', index === flag ? 'active' : '',]">
           <svg-icon
             class="itemIcon"
             :iconName="index === flag ? `white-${item.normalIcon}` : `grey-${item.normalIcon}`"
@@ -15,13 +16,16 @@
         </div>
         <p>{{ item.tit }}</p>
       </li>
+      </keep-alive>
     </ul>
   </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import {useRouter} from 'vue-router'
+import {useRoute} from 'vue-router'
 const router = useRouter()
+const route = useRoute()
 const data = reactive({
   itemData: [
     {
@@ -53,11 +57,13 @@ const data = reactive({
 }
 
 );
-const flag = ref<Number>(0);
+const flag = ref<any>(0);
+
 const changeItem = (i,str) => {
   flag.value = i;
+  localStorage.setItem('routeItem',route.path)
   if(str == '发现'){
-    router.push('/discovry')
+    router.push('/discovery')
   }
   if(str == '播客'){
     router.push('/podcast')
@@ -72,6 +78,13 @@ const changeItem = (i,str) => {
     router.push('/community')
   }
 };
+onMounted(()=>{
+  const currentRoute = localStorage.getItem('routeItem') as string
+  
+  router.push(currentRoute)
+
+  
+})
 </script>
 <style lang="less" scoped>
 .content {

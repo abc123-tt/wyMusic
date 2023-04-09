@@ -39,7 +39,6 @@ export const useStore = defineStore(StoreData.STORE, {
     // 点击时应该从头开始播放？？
     play(){
       console.log('play');
-      
       this.defaultSong.id  = this.playlist[this.currentSongIndex].id
       this.defaultSong.name = this.playlist[this.currentSongIndex].name
       this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl

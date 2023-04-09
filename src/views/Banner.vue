@@ -20,6 +20,9 @@ import { getAPIdata } from "../server/api";
 const  state = reactive({
   imageUrl:[] as any
 })
+
+
+
 onMounted(async () => {
   const res = await getAPIdata("GET","/banner?type=2");
   state.imageUrl = res.data.banners

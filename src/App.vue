@@ -2,7 +2,7 @@
  
 
   <div>
-    <LoadingVue></LoadingVue>
+    <!-- <LoadingVue></LoadingVue> -->
     <router-view></router-view>
     <div :class="[route.name == 'detail'? 'musicPlay':'defStyle']">
       <PlayVue></PlayVue>
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import PlayVue from "./components/item/Play.vue";
-import LoadingVue from './components/Home/Loading.vue'
+// import LoadingVue from './components/Home/Loading.vue'
 const route = useRoute();
 
 </script>
