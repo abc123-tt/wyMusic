@@ -14,6 +14,12 @@ export const useStore = defineStore(StoreData.STORE, {
     },
     playlist:[] as any,
     currentSongIndex:0,
+    // 搜索结果
+    searchList:[],
+    // 搜索关键字
+    searchKeyWord:'',
+    // 控制音乐播放器显示的位置
+    playPosition:true
   }),
   // 类似computed: 修饰一些值
   getters: {
@@ -38,7 +44,7 @@ export const useStore = defineStore(StoreData.STORE, {
     // 按顺序播放全部歌曲
     // 点击时应该从头开始播放？？
     play(){
-      console.log('play');
+      // console.log('play');
       this.defaultSong.id  = this.playlist[this.currentSongIndex].id
       this.defaultSong.name = this.playlist[this.currentSongIndex].name
       this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl
@@ -56,7 +62,13 @@ export const useStore = defineStore(StoreData.STORE, {
       }
       this.play()
     },
-    
+    // 存储搜索结果
+    storageList(list,str){
+      this.searchList = list
+      this.searchKeyWord = str
+      
+      
+    } 
   }
 
 })

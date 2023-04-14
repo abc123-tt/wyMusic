@@ -30,7 +30,7 @@ const data = reactive({
   itemData: [
     {
       id: 1,
-      normalIcon: "discovry",
+      normalIcon: "discovery",
       tit: "发现",
     },
     {
@@ -61,7 +61,7 @@ const flag = ref<any>(0);
 
 const changeItem = (i,str) => {
   flag.value = i;
-  localStorage.setItem('routeItem',route.path)
+  
   if(str == '发现'){
     router.push('/discovery')
   }
@@ -79,10 +79,7 @@ const changeItem = (i,str) => {
   }
 };
 onMounted(()=>{
-  const currentRoute = localStorage.getItem('routeItem') as string
-  
-  router.push(currentRoute)
-
+  router.push('/discovery')
   
 })
 </script>

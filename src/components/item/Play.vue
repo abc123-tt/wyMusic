@@ -30,7 +30,6 @@
   <audio
     ref="audio"
     @ended="onEnded"
-    
     :src="`https://music.163.com/song/media/outer/url?id=${store.defaultSong.id}.mp3`"
   ></audio>
 </template>
@@ -40,7 +39,7 @@ import { useStore } from "../../store/index";
 const store = useStore();
 // 控制音乐播放器的播放和暂停
 const isPlay = ref<boolean>(true);
-const audio = ref();
+const audio = ref(null);
 // 是否旋转歌曲头像
 const isRotate = ref<boolean>(false)
 // 是否正在播放歌曲
@@ -96,9 +95,9 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 1.2rem;
+  height: 1.32rem;
   border-top: 0.5px solid #eee;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.93);
   .play-left {
     display: flex;
     align-items: center;

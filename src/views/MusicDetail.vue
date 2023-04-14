@@ -44,9 +44,8 @@ import { getAPIdata } from "../server/api";
 import ItemTopVue from "./detailItem/ItemTop.vue";
 import ItemContentVue from "./detailItem/ItemContent.vue";
 import SearchVue from "./SearchCom.vue";
-
+import { useStore } from '../store/index';
 const router = useRouter();
-
 const songData = reactive({
   musicList: [] as any,
 });
@@ -72,6 +71,7 @@ const back = () => {
 };
 
 onMounted(async () => {
+ useStore().playPosition = true
   // 获取接口数据
   const {
     query: { id },

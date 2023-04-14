@@ -8,6 +8,11 @@
 </template>
 <script setup lang="ts">
 import FooterVue from "./Footer.vue";
+import { useStore } from '../../store/index';
+import { onMounted } from "vue";
+onMounted(()=>{
+  useStore().playPosition = false
+})
 </script>
 <style lang="less" scoped>
 .bottom-box {

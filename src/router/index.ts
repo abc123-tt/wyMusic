@@ -42,6 +42,11 @@ const routes = [
     component:()=>import("../components/item/SearchPage.vue")
   },
   {
+    path:"/searchlist",
+    name:'searchlist',
+    component:()=>import('../components/item/SearchList.vue')
+  },
+  {
     path:'/detail',
     name:'detail',
     component:()=>import('../views/MusicDetail.vue')

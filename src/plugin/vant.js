@@ -14,7 +14,8 @@ import  {
   Tag,
   Notify ,
   Dialog ,
-  Toast 
+  Toast ,
+  Empty 
 }  from 'vant';
 
 let plugins = [
@@ -32,7 +33,8 @@ let plugins = [
   Tag,
   Notify,
   Dialog  ,
-  Toast 
+  Toast ,
+  Empty 
 ]
 // 将app传进来之前要先暴露函数
 export default function getVant(app){

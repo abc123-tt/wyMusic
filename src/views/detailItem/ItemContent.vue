@@ -26,7 +26,7 @@
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
-              <span v-if="(item.fee = 1)" class="vip">SQ</span>
+              <span v-if="item.fee != 8" class="vip">VIP</span>
               <span
                 class="singer"
                 v-for="(singerName, index) in item.ar"
@@ -86,6 +86,7 @@ const allPlay = () => {
 
 onMounted(() => {
   getData();
+  
 });
 </script>
 <style lang="less" scoped>
@@ -133,7 +134,7 @@ onMounted(() => {
     padding:.3rem 0.3rem;
     background-color: #fff;
     ul{
-      padding-bottom:2.8rem;
+      padding-bottom:1.1rem;
     }
     .listItem {
       display: flex;

@@ -4,7 +4,7 @@
   <div>
     <!-- <LoadingVue></LoadingVue> -->
     <router-view></router-view>
-    <div :class="[route.name == 'detail'? 'musicPlay':'defStyle']">
+    <div :class="[$store.playPosition ? 'musicPlay':'defStyle']">
       <PlayVue></PlayVue>
     </div>
   </div>
@@ -12,16 +12,17 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import {useStore} from './store/index'
 import PlayVue from "./components/item/Play.vue";
 // import LoadingVue from './components/Home/Loading.vue'
 const route = useRoute();
-
+const $store = useStore()
 </script>
 <style scoped lang="less">
 .musicPlay {
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -3px;
   width: 100%;
 }
 .defStyle {
