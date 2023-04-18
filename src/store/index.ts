@@ -19,7 +19,12 @@ export const useStore = defineStore(StoreData.STORE, {
     // 搜索关键字
     searchKeyWord:'',
     // 控制音乐播放器显示的位置
-    playPosition:true
+    playPosition:true,
+    // 判断是否已经登录
+    isLogin:false,
+    // 控制底部播放器是否显示
+    isPlayCom:true,
+    
   }),
   // 类似computed: 修饰一些值
   getters: {

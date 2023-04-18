@@ -39,8 +39,11 @@
       class="showLeft"
     >
       <div class="user-box">
-        <div class="userInfo">
-          <img src="" alt="" class="userPic" />
+        <div class="userInfo" @click="goLogin">
+          <div class="userPic">
+            <!-- <svg-icon iconName="notLogin" class="notLogin" ></svg-icon> -->
+            <img src="../../assets/userPic.jpg" alt="" class="headerPic" />
+          </div>
           <span class="username">立即登录</span>
           <van-icon name="arrow" />
         </div>
@@ -68,16 +71,32 @@
           </li>
         </ul>
       </div>
+      <!-- 音乐服务 -->
+      <div class="service-card">
+        <ul>
+          <li v-for="item in localData.musicService" :key="item.id">
+            <div>
+              <svg-icon :iconName="item.iconName" class="msgIcon"></svg-icon>
+              <span class="tit">{{ item.title }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- 退出按钮 -->
+      <div class="loginOut" @click="loginOut">退出登录</div>
     </van-popup>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import SearchVue from '../../views/SearchCom.vue';
 import BannerVue from '../../views/Banner.vue';
 import FasteEnterVue from '../../views/FastEnter.vue';
 import localData from '../../plugin/localData';
+import { showConfirmDialog } from 'vant';
+import { showLoadingToast } from 'vant';
+import { getAPIdata } from '../../server/api';
 // 搜索关键字存储
 const searchValue = ref('');
 // 个人中心抽屉的显示
@@ -87,11 +106,36 @@ const drawerOpen = () => {
   showLeft.value = true;
 };
 // 使用路由
-const router = useRouter();
+const $router = useRouter();
 
 // 跳转到搜索页
 const toSearch = () => {
-  router.push('/search');
+  $router.push('/search');
+};
+
+// 登录
+const goLogin = () => {};
+
+// 注销
+const loginOut = async () => {
+  const logout = await getAPIdata('GET', '/logout');
+  showConfirmDialog({
+    title: '标题',
+    message: '确定退出当前账号吗？',
+  })
+    .then(() => {
+      localStorage.removeItem('loginCode');
+      showLoadingToast({
+        message: '加载中...',
+        forbidClick: true,
+        overlay:true,
+        duration:1000
+      });
+      let delay = setTimeout(()=>{
+        $router.push('/login');
+      },1000)
+    })
+    .catch(() => {});
 };
 </script>
 <style lang="less">
@@ -150,8 +194,20 @@ const toSearch = () => {
           width: 0.8rem;
           height: 0.8rem;
           border-radius: 0.5rem;
-          margin-right: 0.2rem;
-          // border:1px solid #ccc;
+          background-color: #f7ebeb;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 0.3rem;
+          .notLogin {
+            width: 0.55rem;
+            height: 0.55rem;
+          }
+          .headerPic {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 0.5rem;
+          }
         }
       }
       .sweep-icon {
@@ -210,37 +266,50 @@ const toSearch = () => {
         }
       }
     }
-    .msg-card {
+    .msg-card,
+    .service-card {
       width: 100%;
       background-color: #fff;
       border-radius: 0.3rem;
-      padding: .1rem 0.3rem;
+      padding: 0.1rem 0.3rem;
       box-sizing: border-box;
       ul {
         li {
           display: flex;
           justify-content: space-between;
           padding: 0.35rem 0;
-            border-bottom: 1px solid #eeeeee;
-            color: @defaultFont;
-          &:last-child{
+          border-bottom: 1px solid #eeeeee;
+          color: @defaultFont;
+          &:last-child {
             border-bottom: none;
           }
           div {
             display: flex;
             align-items: center;
-            .tit{
-              font-size: .35rem;
+            .tit {
+              font-size: 0.35rem;
             }
           }
           .msgIcon {
             width: 0.5rem;
             height: 0.5rem;
-            margin-right: .35rem;
+            margin-right: 0.35rem;
           }
-          
         }
       }
+    }
+    .service-card {
+      margin-top: 0.5rem;
+    }
+    .loginOut {
+      width: 100%;
+      padding: 0.4rem 0;
+      background-color: #fff;
+      margin-top: 0.6rem;
+      text-align: center;
+      font-size: 0.4rem;
+      color: #fa3937;
+      border-radius: 0.3rem;
     }
   }
 }

@@ -9,8 +9,6 @@
       <van-search
         class="search-input"
         v-model="keyValue"
-        placeholder="KASTRA"
-        @keydown.enter.stop="toSearch"
         clearable="true"
         ref="myInput"
         @clear="onClear"

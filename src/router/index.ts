@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import {useStore} from '../store/index'
 
 // 这个RouterRecordRaw规定了必须要传入一个path和components
 const routes = [
   {
     path:"/",
     name:"home",
-    redirect:"/discovery",
+    redirect:"/login",
     component:()=>import("../components/Home/Home.vue"),
     children:[
       {
@@ -56,6 +56,11 @@ const routes = [
     name:'player',
     component:()=>import('../components/Player.vue')
   },
+  {
+    path:'/login',
+    name:'login',
+    component:()=>import('../components/Login.vue')
+  },
 ]
 
 
@@ -63,6 +68,19 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
+router.beforeEach((to,from,next)=>{
+  const $store = useStore()
+  if(to.path == '/login'){
+    $store.isPlayCom = false
+    next()       
+  }else{
+    // const cookie = localStorage.getItem('loginCookie')
+    $store.isPlayCom = true
+    // if(!cookie) return next('/login')
+    next()
+  }
+  
+  
+})
 
 export default router
