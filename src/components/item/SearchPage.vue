@@ -114,8 +114,7 @@ const searchData = reactive<Object<T>>({
   booksData: [],
   searchList: [],
 });
-// 是否显示加载动画
-const isShow = ref<string>(false)
+
 const searchValue = ref<string | number>();
 // 获取输入框元素
 const myInput = ref(null);

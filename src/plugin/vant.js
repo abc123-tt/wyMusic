@@ -15,7 +15,8 @@ import  {
   Notify ,
   Dialog ,
   Toast ,
-  Empty 
+  Empty ,
+  
 }  from 'vant';
 
 let plugins = [

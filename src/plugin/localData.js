@@ -38,6 +38,46 @@
     "唯一 告五人",
     "孤勇者",
     "在你身边"
+  ],
+  "myMsg":[
+    {
+      id:1,
+      iconName:'myMsg',
+      title:'我的消息'
+    },
+    {
+      id:2,
+      iconName:'cloud',
+      title:'云贝中心'
+    },
+    {
+      id:3,
+      iconName:'author',
+      title:'创作者中心'
+    },
+  ],
+  "musicService":[
+    {
+      id:1,
+      iconName:'ticket',
+      title:'云村有票'
+    },
+    {
+      id:2,
+      iconName:'shopMall',
+      title:'商城'
+    },
+    {
+      id:3,
+      iconName:'bell',
+      title:'口袋彩铃'
+    },
+    {
+      id:4,
+      iconName:'game',
+      title:'游戏专区'
+    },
+   
   ]
 }
 export default data
