@@ -1,6 +1,6 @@
 <template>
   <div class="music-list">
-    <van-sticky positioon="bottom" :offset-top="props.isTop?'49.5':'0'">
+    <van-sticky positioon="bottom" :offset-top="props.isTop ? '49.5' : '0'">
       <div class="listTitle">
         <div class="playAll">
           <van-icon class="playIcon" name="play-circle" @click="allPlay" />
@@ -22,7 +22,11 @@
           v-for="(item, index) in songList.songs"
           :key="item.id"
         >
-          <div class="song-left" @click="playSong(songList.songs,index)">
+          <div
+            class="song-left"
+            @click="playSong(songList.songs, index)"
+            ref="activePlay"
+          >
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
@@ -48,13 +52,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, reactive,defineProps } from "vue";
-import { getAPIdata } from "../../server/api";
-import { useRoute } from "vue-router";
-import { useStore } from "../../store/index";
+import { onMounted, ref, reactive, defineProps } from 'vue';
+import { getAPIdata } from '../../server/api';
+import { useRoute } from 'vue-router';
+import { useStore } from '../../store/index';
 
 const store = useStore();
 const route = useRoute();
+
 
 // 歌曲数据
 const songList = reactive({
@@ -64,29 +69,30 @@ const songList = reactive({
 const props = defineProps<{
   // playList;
   // 控制播放全部的吸附的偏移值
-  isTop:any
+  isTop: any;
 }>();
 const id = route.query.id;
 // 获取歌曲数据
 const getData = async () => {
-  const res = await getAPIdata("GET", `/playlist/track/all?id=${id}&limit=30`);
+  const res = await getAPIdata('GET', `/playlist/track/all?id=${id}&limit=30`);
   songList.songs = res.data.songs;
   console.log(songList.songs);
 };
 
 // 播放单首歌曲
-const playSong = (item:any,index:number) => {
-  store.setSong(item,index);
+const playSong = (item: any, index: number) => {
+
+
+  store.setSong(item, index);
 };
 // 播放所有歌曲
 const allPlay = () => {
   store.setAllSongs(songList.songs);
-  store.play()
+  store.play();
 };
 
 onMounted(() => {
   getData();
-  
 });
 </script>
 <style lang="less" scoped>
@@ -96,7 +102,7 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding:0.4rem 0.28rem;
+    padding: 0.4rem 0.28rem;
     background-color: #fff;
     border-radius: 0.3rem 0.3rem 0 0;
 
@@ -131,28 +137,28 @@ onMounted(() => {
   }
   // 歌曲列表
   .list-box {
-    padding:.3rem 0.3rem;
+    padding: 0.3rem 0.3rem;
     background-color: #fff;
-    ul{
-      padding-bottom:1.1rem;
+    ul {
+      padding-bottom: 1.1rem;
     }
     .listItem {
       display: flex;
       padding: 0.3rem 0;
       align-items: center;
       justify-content: space-between;
-      
       .song-left {
         display: flex;
         width: 80%;
         align-items: center;
       }
+
       .listId {
         font-size: 0.35rem;
         color: #999;
-        width:8%;
+        width: 8%;
         text-align: center;
-        margin-right: .25rem;
+        margin-right: 0.25rem;
       }
       .songName-box {
         width: 70%;
@@ -170,7 +176,6 @@ onMounted(() => {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-
         }
         .singer {
           color: #999;
@@ -189,5 +194,8 @@ onMounted(() => {
       }
     }
   }
+}
+.isActive {
+  color: #fc473c;
 }
 </style>

@@ -42,9 +42,9 @@
         <div class="userInfo" @click="goLogin">
           <div class="userPic">
             <!-- <svg-icon iconName="notLogin" class="notLogin" ></svg-icon> -->
-            <img src="../../assets/userPic.jpg" alt="" class="headerPic" />
+            <img :src="$store.userPicUrl" alt="" class="headerPic" />
           </div>
-          <span class="username">立即登录</span>
+          <span class="username">{{$store.userName}}</span>
           <van-icon name="arrow" />
         </div>
         <svg-icon iconName="sweep" class="sweep-icon"></svg-icon>
@@ -84,23 +84,26 @@
       </div>
       <!-- 退出按钮 -->
       <div class="loginOut" @click="loginOut">退出登录</div>
+    
     </van-popup>
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import SearchVue from '../../views/SearchCom.vue';
 import BannerVue from '../../views/Banner.vue';
 import FasteEnterVue from '../../views/FastEnter.vue';
 import localData from '../../plugin/localData';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { showConfirmDialog } from 'vant';
 import { showLoadingToast } from 'vant';
 import { getAPIdata } from '../../server/api';
+import {useStore} from '../../store/index'
+const $store = useStore()
 // 搜索关键字存储
 const searchValue = ref('');
 // 个人中心抽屉的显示
-const showLeft = ref(true);
+const showLeft = ref(false);
 // 抽屉开关函数
 const drawerOpen = () => {
   showLeft.value = true;
@@ -199,6 +202,9 @@ const loginOut = async () => {
           justify-content: center;
           align-items: center;
           margin-right: 0.3rem;
+          .username{
+            font-size: .35rem;
+          }
           .notLogin {
             width: 0.55rem;
             height: 0.55rem;

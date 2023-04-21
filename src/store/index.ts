@@ -6,11 +6,11 @@ import { StoreData } from './store-name'
 export const useStore = defineStore(StoreData.STORE, {
   state: () => ({
     defaultSong: {
-      id: 436514312,
-      name: "成都",
+      id: 1359356908,
+      name: "晚安",
       pic: 2946691234868155,
-      picUrl: "https://p2.music.126.net/34YW1QtKxJ_3YnX9ZzKhzw==/2946691234868155.jpg",
-      singerName:"赵雷"
+      picUrl: "http://p3.music.126.net/8N1fsMRm2L5HyZccc6I3ew==/109951164007377169.jpg",
+      singerName:"颜人中"
     },
     playlist:[] as any,
     currentSongIndex:0,
@@ -20,11 +20,18 @@ export const useStore = defineStore(StoreData.STORE, {
     searchKeyWord:'',
     // 控制音乐播放器显示的位置
     playPosition:true,
-    // 判断是否已经登录
-    isLogin:false,
     // 控制底部播放器是否显示
     isPlayCom:true,
-    
+    // 判断是否已经登录
+    // isLogin:false,
+    // 存放用户头像
+    userPicUrl:'',
+    // 存放用户名
+    userName:'',
+    // 存放用户的歌单
+    userPlaylist:[],
+    // 存放用户详细信息
+    accountDetail:[]
   }),
   // 类似computed: 修饰一些值
   getters: {
@@ -70,9 +77,9 @@ export const useStore = defineStore(StoreData.STORE, {
     // 存储搜索结果
     storageList(list,str){
       this.searchList = list
+      console.log(list);
+      
       this.searchKeyWord = str
-      
-      
     } 
   }
 

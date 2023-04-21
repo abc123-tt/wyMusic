@@ -1,9 +1,8 @@
 <template>
   <div>
     <!-- <LoadingVue></LoadingVue> -->
-    <!-- <LoginVue></LoginVue> -->
     <router-view></router-view>
-    <div :class="[$store.playPosition ? 'musicPlay':'defStyle']">
+    <div :class="[$store.playPosition ? 'otherStyle':'defStyle']">
       <PlayVue v-if="$store.isPlayCom"></PlayVue>
     </div>
   </div>
@@ -13,23 +12,23 @@ import { useRoute } from "vue-router";
 import {useStore} from './store/index'
 import PlayVue from "./components/item/Play.vue";
 // import LoadingVue from './components/Home/Loading.vue'
-import LoginVue from './components/Login.vue'
 const route = useRoute();
 const $store = useStore()
 </script>
 <style scoped lang="less">
-.musicPlay {
+.defStyle {
+  position: fixed;
+  left: 0;
+  bottom: 1.6rem;
+  width: 100%;
+  }
+  .otherStyle {
   position: fixed;
   left: 0;
   bottom: -3px;
   width: 100%;
 }
-.defStyle {
-  position: fixed;
-  left: 0;
-  bottom: 1.5rem;
-  width: 100%;
-  }
+
 
   
 </style>

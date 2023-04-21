@@ -67,7 +67,7 @@ const handleScroll = () => {
 
 // 后退函数
 const back = () => {
-  router.go(-1);
+  router.push('/discovery');
 };
 
 onMounted(async () => {
@@ -76,6 +76,8 @@ onMounted(async () => {
   const {
     query: { id },
   } = useRoute();
+  console.log(id);
+  
   const res = await getAPIdata("GET", `/playlist/detail?id=${id}`);
   songData.musicList = res.data.playlist;
 

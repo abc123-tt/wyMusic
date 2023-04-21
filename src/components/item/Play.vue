@@ -128,7 +128,7 @@ onMounted(() => {
     }
     // 旋转头像
     .rotateImg{
-      animation: spin 5s linear infinite;
+      animation: spin 6s linear infinite;
     }
     .singerName {
       color: #999;

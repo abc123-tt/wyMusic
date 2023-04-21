@@ -25,13 +25,13 @@
       <div class="bottom-box">
         <p>{{ playList.description }}</p>
         <div class="share-box">
-          <div class="share">
+          <div class="share" v-if="playList.shareCount">
             <van-icon name="share" /><span>{{ playList.shareCount }}</span>
           </div>
-          <div class="comment">
+          <div class="comment" v-if="playList.commentCount">
             <van-icon name="chat" /><span>{{ playList.commentCount }}</span>
           </div>
-          <div class="collect">
+          <div class="collect" v-if="star">
             <van-icon name="star" /><span>{{ star }}</span>
           </div>
         </div>

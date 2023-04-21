@@ -1,7 +1,6 @@
 <template>
   <div class="content">
     <ul class="footerlist" >
-      <keep-alive>
         <li
         class="listItem"
         v-for="(item, index) in data.itemData"
@@ -16,7 +15,6 @@
         </div>
         <p>{{ item.tit }}</p>
       </li>
-      </keep-alive>
     </ul>
   </div>
 </template>
@@ -79,7 +77,7 @@ const changeItem = (i,str) => {
   }
 };
 onMounted(()=>{
-  router.push('/discovery')
+  // router.push('/discovery')
   
 })
 </script>
@@ -95,6 +93,7 @@ onMounted(()=>{
     justify-content: space-around;
     border-top: 1px solid #eee;
     padding: 0.1rem 0;
+    // border: 1px solid red;
     .listItem {
       width: 25%;
       display: flex;
@@ -112,6 +111,10 @@ onMounted(()=>{
           width: 0.65rem;
           height: .65rem;
         }
+      }
+      p{
+      margin-top:.2rem;
+
       }
       .active {
         background-color: #fb2d4c;

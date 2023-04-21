@@ -30,7 +30,7 @@
             <span class="songsName">{{item.name}}</span>
             <p>
               <span class="isVip" v-if="item.fee != 8">VIP</span>
-              <span class="singer">{{keyValue}}- <span>{{item.name}}</span></span>
+              <span v-for="(singerName , index) in item.ar" :key="index" class="singer">{{singerName.name}} - <span>{{item.name}}</span></span>
             </p>
           </div>
           <div class="itemRight">
@@ -59,7 +59,7 @@ const $route = useRoute();
 const $router = useRouter();
 
 const myInput = ref(null);
-const keyValue = ref<string>();
+const keyValue  =ref<string>()
 const data = reactive<Object<T>>({
   songsList: [],
 });
@@ -81,9 +81,9 @@ const playAll = ()=>{
 onMounted(() => {
   $store.playPosition = true
   data.songsList = $store.searchList;
-
-  keyValue.value = $store.searchKeyWord;
- 
+  keyValue.value = $store.searchKeyWord
+  
+  
 
   setTimeout(() => {
     myInput.value.focus();
@@ -183,6 +183,7 @@ onMounted(() => {
           width: 20%;
           text-align: right;
           font-size: 0.5rem;
+          color: #666;
           .play-icon {
             margin-right: 0.5rem;
           }

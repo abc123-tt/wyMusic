@@ -140,7 +140,7 @@ const toSearch = async () => {
   );
 
   searchData.searchList = res.data.result.songs;
-  $store.storageList(searchData.searchList, searchValue.value);
+  $store.storageList(searchData.searchList,searchValue.value);
   router.push('/searchlist');
   searchValue.value = '';
 };
@@ -278,6 +278,7 @@ onMounted(async () => {
   padding: 0 0.4rem;
   padding-bottom: 1.5rem;
   .hot-swipe {
+    width: 100%;
     .van-swipe-item {
       padding-right: 0.2rem;
       box-sizing: border-box;
