@@ -76,7 +76,7 @@ onMounted(async () => {
   const {
     query: { id },
   } = useRoute();
-  console.log(id);
+  // console.log(id);
   
   const res = await getAPIdata("GET", `/playlist/detail?id=${id}`);
   songData.musicList = res.data.playlist;

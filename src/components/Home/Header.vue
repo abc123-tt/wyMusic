@@ -127,7 +127,8 @@ const loginOut = async () => {
     message: '确定退出当前账号吗？',
   })
     .then(() => {
-      localStorage.removeItem('loginCode');
+      localStorage.removeItem('loginCookie');
+      localStorage.removeItem('userID');
       showLoadingToast({
         message: '加载中...',
         forbidClick: true,
@@ -140,6 +141,9 @@ const loginOut = async () => {
     })
     .catch(() => {});
 };
+onMounted(()=>{
+  
+})
 </script>
 <style lang="less">
 @defaultFont: '黑体';

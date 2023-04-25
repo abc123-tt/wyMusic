@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import SearchVue from '../../views/SearchCom.vue';
 import localData from '../../plugin/localData.js';
-import SearchListVue from './SearchList.vue';
+import SearchListVue from '../item/SearchList.vue';
 import { onMounted, onUnmounted, reactive, ref, watch, computed } from 'vue';
 import { showNotify } from 'vant';
 import { showConfirmDialog } from 'vant';

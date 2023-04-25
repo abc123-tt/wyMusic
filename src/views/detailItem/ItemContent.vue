@@ -76,23 +76,27 @@ const id = route.query.id;
 const getData = async () => {
   const res = await getAPIdata('GET', `/playlist/track/all?id=${id}&limit=30`);
   songList.songs = res.data.songs;
-  console.log(songList.songs);
+  // console.log(songList.songs);
 };
 
 // 播放单首歌曲
 const playSong = (item: any, index: number) => {
+  // 将歌单传过去和点击时是哪首歌的索引值传过去，在那边将currentSongIndex覆盖掉，然后在歌单中播放索引值为当前值的歌曲就能实现精准播放
+  // 例如播放第十一首歌：playlist[10]
+  store.play(item, index);
+  // console.log(store.currentSongIndex);
 
-
-  store.setSong(item, index);
 };
 // 播放所有歌曲
 const allPlay = () => {
   store.setAllSongs(songList.songs);
-  store.play();
+  // 全部播放时将歌单传过去，并传一个默认值为0，表示从第一首歌开始播放，这样在播放过程中再次点击全部播放按钮就可以实现从第一首重新播放
+  store.play(songList.songs,0);
 };
 
 onMounted(() => {
   getData();
+  
 });
 </script>
 <style lang="less" scoped>

@@ -13,6 +13,7 @@ export const useStore = defineStore(StoreData.STORE, {
       singerName:"颜人中"
     },
     playlist:[] as any,
+    // 记录当前的播放的歌曲 索引值
     currentSongIndex:0,
     // 搜索结果
     searchList:[],
@@ -31,7 +32,9 @@ export const useStore = defineStore(StoreData.STORE, {
     // 存放用户的歌单
     userPlaylist:[],
     // 存放用户详细信息
-    accountDetail:[]
+    accountDetail:[],
+    // 是否展开歌词详情页
+    isShowLyric:true
   }),
   // 类似computed: 修饰一些值
   getters: {
@@ -40,23 +43,14 @@ export const useStore = defineStore(StoreData.STORE, {
   // 类似methods：可以同步  异步  提交到state
   actions: {
     // 不要写箭头函数，否则this的指向会错
-    setSong(songsItem:any,index:number) {
-      this.playlist = songsItem
-      this.currentSongIndex = index
-      this.defaultSong.id = songsItem[index].id
-      this.defaultSong.name = songsItem[index].name
-      this.defaultSong.picUrl = songsItem[index].al.picUrl
-      songsItem[index].ar.forEach((ele)=>{
-        this.defaultSong.singerName = ele.name
-      })
-    },
-    setAllSongs(list:any){
-      this.playlist = list
-    },
     // 按顺序播放全部歌曲
-    // 点击时应该从头开始播放？？
-    play(){
-      // console.log('play');
+    // 播放过程中点击时应该从头开始播放？？
+    play(songsItem:any,index:number){
+      // 先存一份
+      this.playlist = songsItem
+      // 将currentSongIndex覆盖掉
+      this.currentSongIndex = index
+      // 拿到对应的歌曲的信息
       this.defaultSong.id  = this.playlist[this.currentSongIndex].id
       this.defaultSong.name = this.playlist[this.currentSongIndex].name
       this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl
@@ -64,7 +58,6 @@ export const useStore = defineStore(StoreData.STORE, {
         this.defaultSong.singerName = ele.name
       })
     },
-    
     // 播放下一曲
     playNext(){
       if(this.currentSongIndex>=this.playlist.length-1){ 
@@ -72,7 +65,7 @@ export const useStore = defineStore(StoreData.STORE, {
       }else{
         this.currentSongIndex++
       }
-      this.play()
+      this.play(this.playlist,this.currentSongIndex)
     },
     // 存储搜索结果
     storageList(list,str){

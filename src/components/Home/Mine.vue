@@ -40,7 +40,9 @@
         <van-tab title="创建歌单">
           <div class="content createList">
             <div class="createTit">
-              <span class="creLeft">创建歌单({{data.myCreateList.length}}个)</span>
+              <span class="creLeft"
+                >创建歌单({{ data.myCreateList.length }}个)</span
+              >
               <div class="creRight">
                 <van-icon name="plus" />
                 <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
@@ -66,8 +68,10 @@
         </van-tab>
         <van-tab title="收藏歌单">
           <div class="content starList">
-             <div class="createTit">
-              <span class="creLeft">收藏歌单({{data.myStarList.length}}个)</span>
+            <div class="createTit">
+              <span class="creLeft"
+                >收藏歌单({{ data.myStarList.length }}个)</span
+              >
               <div class="rightIcon">
                 <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
               </div>
@@ -91,7 +95,18 @@
           </div>
         </van-tab>
         <van-tab title="歌单助手">
-          <div class="content helper">内容3</div>
+          <div class="content helper">
+            <p class="title">歌单助手</p>
+            <div class="content">
+              <p class="tip">你可以从歌单中筛选出</p>
+              <div class="filter">
+                <span class="keyOne">张学友</span>
+                <span class="keyTow">80年代</span>
+                <span>老歌</span>
+              </div>
+              <van-button round type="danger"><span>试试看</span></van-button>
+            </div>
+          </div>
         </van-tab>
       </van-tabs>
     </div>
@@ -99,8 +114,8 @@
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, toRef, toRaw, ref } from 'vue';
-import { useStore } from '../store/index';
-import { getAPIdata } from '../server/api';
+import { useStore } from '../../store/index';
+import { getAPIdata } from '../../server/api';
 import { useRouter } from 'vue-router';
 const $router = useRouter();
 const $store = useStore();
@@ -115,15 +130,14 @@ let data = reactive({
   myStarList: [],
 });
 const current = ref<string>();
-const listDetail = (id)=>{
-   $router.push({
+const listDetail = (id) => {
+  $router.push({
     path: '/detail',
     query: {
       id,
     },
   });
-  
-}
+};
 
 onMounted(async () => {
   let userID = localStorage.getItem('userID');
@@ -225,7 +239,7 @@ onMounted(async () => {
     .createTit {
       display: flex;
       justify-content: space-between;
-      margin: 0.3rem 0 ;
+      margin: 0.3rem 0;
       color: #999;
       .creLeft {
         font-weight: normal;
@@ -236,53 +250,88 @@ onMounted(async () => {
         width: 18%;
         display: flex;
         justify-content: space-between;
-        font-size: .5rem;
+        font-size: 0.5rem;
       }
     }
     .listItem {
       display: flex;
       justify-content: space-between;
-      padding: .13rem 0;
+      padding: 0.13rem 0;
       align-items: center;
       .listPic {
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 0.3rem;
-        margin-right: .3rem;
+        margin-right: 0.3rem;
       }
-      .listName{
+      .listName {
         display: flex;
         flex-direction: column;
         justify-content: center;
         width: 65%;
-        b{
-          margin-bottom:.2rem;
-          font-size: .4rem;
+        b {
+          margin-bottom: 0.2rem;
+          font-size: 0.4rem;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
         }
-        span{
+        span {
           color: #999;
         }
       }
-      .more-icon{
+      .more-icon {
         margin-left: auto;
-        font-size: .4rem;
+        font-size: 0.4rem;
         color: #999;
         // margin:auto 0;
       }
     }
   }
-  .createList {
-  }
   .starList {
-    .rightIcon{
-      font-size: .5rem;
+    .rightIcon {
+      font-size: 0.5rem;
     }
   }
   .helper {
-    height: 16rem;
+    margin-bottom: 3rem;
+    padding: .4rem .3rem;
+    .title{
+      font-size: .2rem;
+      color: #999;
+      margin:.3rem;
+    }
+    .content{
+      text-align: center;
+      color: #999;
+      .filter{
+        padding: .4rem 0;
+        font-size: .3rem;
+        .keyOne,.keyTow{
+          display: inline-block;
+          padding: .1rem .2rem;
+          background-color: rgba(237, 132, 132,.3);
+          color: rgb(246, 71, 71);
+          font-family: '黑体';
+          border-radius: .1rem;
+        }
+        .keyTow{
+          color: rgb(106, 71, 182);
+          background-color: rgba(87, 158, 245,.3);
+          margin: 0 .3rem;
+        }
+      }
+    }
+  }
+}
+.van-button__content{
+  height: 0;
+}
+.van-button{
+  height: .8rem;
+  span{
+    padding: .3rem;
+    font-size: .2rem;
   }
 }
 </style>

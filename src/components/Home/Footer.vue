@@ -55,9 +55,10 @@ const data = reactive({
 }
 
 );
-const flag = ref<any>(0);
+let flag = ref<any>(0);
 
 const changeItem = (i,str) => {
+  
   flag.value = i;
   
   if(str == '发现'){
@@ -75,10 +76,22 @@ const changeItem = (i,str) => {
   if(str == '社区'){
     router.push('/community')
   }
+
 };
 onMounted(()=>{
-  // router.push('/discovery')
-  
+  //  window.location.pathname:获取当前路由地址
+  const navBarActive = window.location.pathname
+  if(navBarActive == '/discovery'){
+    flag.value = 0
+  }else if(navBarActive == '/podcast'){
+    flag.value = 1
+  }else if(navBarActive == '/mine'){
+    flag.value = 2
+  }else if(navBarActive == '/attention'){
+    flag.value = 3
+  }else if(navBarActive == '/community'){
+    flag.value = 4
+  }
 })
 </script>
 <style lang="less" scoped>

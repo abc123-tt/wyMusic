@@ -19,7 +19,7 @@ const $store = useStore()
 .defStyle {
   position: fixed;
   left: 0;
-  bottom: 1.6rem;
+  bottom: 1.64rem;
   width: 100%;
   }
   .otherStyle {

@@ -1,13 +1,13 @@
 <template>
   <div class="play-box">
-    <div class="play-left" @click="toLyric($router.push('/player'))">
-      <div class="songImg" :class="[isRotate?'rotateImg':'']">
-        <img :src="store.defaultSong.picUrl" alt="" />
+    <div class="play-left" @click="toLyric">
+      <div class="songImg" :class="[isRotate ? 'rotateImg' : '']">
+        <img :src="$store.defaultSong.picUrl" alt="" />
       </div>
       <div class="songInfo">
-        <span> {{ store.defaultSong.name }}</span>
+        <span> {{ $store.defaultSong.name }}</span>
         <span class="singerName">
-          <span class="heng">-</span>{{ store.defaultSong.singerName }}</span
+          <span class="heng">-</span>{{ $store.defaultSong.singerName }}</span
         >
       </div>
     </div>
@@ -30,62 +30,78 @@
   <audio
     ref="audio"
     @ended="onEnded"
-    :src="`https://music.163.com/song/media/outer/url?id=${store.defaultSong.id}.mp3`"
+    :src="`https://music.163.com/song/media/outer/url?id=${$store.defaultSong.id}.mp3`"
   ></audio>
+
+  <van-popup
+    v-model:show="$store.isShowLyric"
+    position="right"
+    :style="{ width: '100%', height: '100%' }"
+  >
+    <LyricVue :musicInfo = "songData.musicInfo"></LyricVue>
+  </van-popup>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch, watchEffect } from "vue";
-import { useStore } from "../../store/index";
-const store = useStore();
+import LyricVue from '../Lyric.vue';
+import { onMounted, ref, watch, watchEffect, reactive } from 'vue';
+import { useStore } from '../../store/index';
+import { useRouter, useRoute } from 'vue-router';
+import router from '../../router';
+const $router = useRouter();
+const $route = useRoute();
+const $store = useStore();
 // 控制音乐播放器的播放和暂停
 const isPlay = ref<boolean>(true);
 const audio = ref(null);
 // 是否旋转歌曲头像
-const isRotate = ref<boolean>(false)
+const isRotate = ref<boolean>(false);
 // 是否正在播放歌曲
-const isPlaying = ref(false)
+const isPlaying = ref<boolean>(false);
+
+// 获取当前播放的歌曲的数据
+const songData = reactive<T>({
+  musicInfo: [],
+});
 const playSong = () => {
   isPlay.value = !isPlay.value;
   if (audio.value.paused) {
-    audio.value.play()
-    isRotate.value = !isRotate.value
+    audio.value.play();
+    isRotate.value = !isRotate.value;
   } else {
     audio.value.pause();
-    isRotate.value = !isRotate.value
+    isRotate.value = !isRotate.value;
   }
 };
 
-
+// 跳转到歌词详情页
+const toLyric = () => {
+  songData.musicInfo = $store.defaultSong;
+  $store.isShowLyric = true;
+  // 点击音乐播放器到详情页时将当前路径保存到本地
+  localStorage.setItem('historyPath', $route.path);
+};
+const goBack = () => {
+  // 在详情页点击返回时跳转到上一个页面
+  $router.push(localStorage.getItem('historyPath'));
+};
 // 监听对象中某个属性要把它变为一个函数
 watch(
-  () => store.defaultSong.id,
+  () => $store.defaultSong.id,
   () => {
     // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
     audio.value.autoplay = true;
     isPlay.value = false;
-    isRotate.value = true
+    isRotate.value = true;
   }
-)
-watchEffect(()=>{
-//  if(audio.value){
-//    audio.value.addEventListener('playing',()=>{
-//     isPlaying.value = true
-//   })
-//   audio.value.addEventListener('pause',()=>{
-//     isPlaying.value = false
-//   })
-//  }
-})
+);
+
 // 监听歌曲是否播放完
 const onEnded = () => {
   isPlay.value = true;
-    store.playNext()
+  $store.playNext();
   isPlay.value = false;
 };
-onMounted(() => {
-
-  
-});
+onMounted(() => {});
 </script>
 <style lang="less" scoped>
 .play-box {
@@ -127,7 +143,7 @@ onMounted(() => {
       }
     }
     // 旋转头像
-    .rotateImg{
+    .rotateImg {
       animation: spin 6s linear infinite;
     }
     .singerName {
@@ -151,12 +167,16 @@ onMounted(() => {
   }
 }
 @keyframes spin {
-  0%{
-    transform:rotate(0deg)
+  0% {
+    transform: rotate(0deg);
   }
-  100%{
+  100% {
     transform: rotate(360deg);
   }
-  
+}
+
+/deep/.van-popup--right {
+  z-index: 11111 !important;
+  background: red;
 }
 </style>

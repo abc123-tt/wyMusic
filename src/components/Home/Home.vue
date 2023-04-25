@@ -2,7 +2,7 @@
   <div>
     <router-view></router-view>
     <div class="bottom-box">
-      <FooterVue :isBottom="true"></FooterVue>
+      <FooterVue></FooterVue>
     </div>
   </div>
 </template>

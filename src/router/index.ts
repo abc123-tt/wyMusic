@@ -12,39 +12,40 @@ const routes = [
       {
         path:'discovery',
         name:'discovery',
-        component:()=>import("../components/Discovery.vue")
+        component:()=>import("../components/Home/Discovery.vue")
       },
       {
         path:'podcast',
         name:'podcast',
-        component:()=>import('../components/Podcast.vue')
+        component:()=>import('../components/Home/Podcast.vue')
       },
       {
         path:'mine',
         name:'mine',
-        component:()=>import('../components/Mine.vue')
+        component:()=>import('../components/Home/Mine.vue')
       },
       {
         path:'attention',
         name:'attention',
-        component:()=>import('../components/Attention.vue')
+        component:()=>import('../components/Home/Attention.vue')
+        
       },
       {
         path:'community',
         name:'community',
-        component:()=>import('../components/Community.vue')
+        component:()=>import('../components/Home/Community.vue')
       },
     ]
   },
   {
     path:"/search",
     // 路由懒加载，会进行代码分割，不会打包到一起
-    component:()=>import("../components/item/SearchPage.vue")
+    component:()=>import("../components/searchItem/SearchPage.vue")
   },
   {
     path:"/searchlist",
     name:'searchlist',
-    component:()=>import('../components/item/SearchList.vue')
+    component:()=>import('../components/searchItem/SearchList.vue')
   },
   {
     path:'/detail',
@@ -54,7 +55,10 @@ const routes = [
   {
     path:'/player',
     name:'player',
-    component:()=>import('../components/Player.vue')
+    component:()=>import('../components/Lyric.vue'),
+    meta:{
+      keepAlive:true
+    }
   },
   {
     path:'/login',
