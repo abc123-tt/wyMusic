@@ -1,6 +1,6 @@
 <template>
   <div>
-    Podcast
+ 
   </div>
 </template>
 <script setup lang='ts'>

@@ -31,26 +31,26 @@ const data = reactive({
       normalIcon: "discovery",
       tit: "发现",
     },
-    {
-      id: 2,
-      normalIcon: "podcast",
-      tit: "播客",
-    },
+    // {
+    //   id: 2,
+    //   normalIcon: "podcast",
+    //   tit: "播客",
+    // },
     {
       id: 3,
       normalIcon: "my",
       tit: "我的",
     },
-    {
-      id: 4,
-      normalIcon: "attention",
-      tit: "关注",
-    },
-    {
-      id: 5,
-      normalIcon: "community",
-      tit: "社区",
-    },
+    // {
+    //   id: 4,
+    //   normalIcon: "attention",
+    //   tit: "关注",
+    // },
+    // {
+    //   id: 5,
+    //   normalIcon: "community",
+    //   tit: "社区",
+    // },
   ],
 }
 

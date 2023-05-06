@@ -152,8 +152,6 @@ onMounted(async () => {
 
   data.myStarList = mylist.data.playlist.splice(1, 7);
 
-  console.log(data.myCreateList);
-
   data.loveMusic = mylist.data.playlist[0];
   data.loveMusic.name = data.loveMusic.name.slice(4);
 });
@@ -164,7 +162,6 @@ onMounted(async () => {
   background-color: #ecebec;
   padding: 0.5rem 0.4rem;
   box-sizing: border-box;
-  // height: 100vh;
   position: relative;
   .userinfo-card {
     width: 100%;
@@ -231,6 +228,7 @@ onMounted(async () => {
   }
 }
 .playList {
+  width: 100%;
   .content {
     margin-top: 0.3rem;
     background-color: #fff;

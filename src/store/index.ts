@@ -6,35 +6,40 @@ import { StoreData } from './store-name'
 export const useStore = defineStore(StoreData.STORE, {
   state: () => ({
     defaultSong: {
-      id: 1359356908,
-      name: "晚安",
-      pic: 2946691234868155,
-      picUrl: "http://p3.music.126.net/8N1fsMRm2L5HyZccc6I3ew==/109951164007377169.jpg",
-      singerName:"颜人中"
+      id: 441491828,
+      name: "水星记",
+      picUrl: "http://p3.music.126.net/wSMfGvFzOAYRU_yVIfquAA==/2946691248081599.jpg",
+      singerName: "郭顶"
     },
-    playlist:[] as any,
+    playlist: [] as any,
     // 记录当前的播放的歌曲 索引值
-    currentSongIndex:0,
+    currentSongIndex: 0,
     // 搜索结果
-    searchList:[],
+    searchList: [],
     // 搜索关键字
-    searchKeyWord:'',
+    searchKeyWord: '',
     // 控制音乐播放器显示的位置
-    playPosition:true,
+    playPosition: true,
     // 控制底部播放器是否显示
-    isPlayCom:true,
-    // 判断是否已经登录
-    // isLogin:false,
+    isPlayCom: true,
     // 存放用户头像
-    userPicUrl:'',
+    userPicUrl: '',
     // 存放用户名
-    userName:'',
+    userName: '',
     // 存放用户的歌单
-    userPlaylist:[],
+    userPlaylist: [],
     // 存放用户详细信息
-    accountDetail:[],
+    accountDetail: [],
     // 是否展开歌词详情页
-    isShowLyric:true
+    isShowLyric: false,
+    // 控制音乐播放与暂停
+    isPlay: false,
+    // 保存当前歌曲的播放时间
+    currentTime: 0,
+    // 歌曲总时长
+    duration:0,
+    exam:0
+    
   }),
   // 类似computed: 修饰一些值
   getters: {
@@ -44,36 +49,53 @@ export const useStore = defineStore(StoreData.STORE, {
   actions: {
     // 不要写箭头函数，否则this的指向会错
     // 按顺序播放全部歌曲
-    // 播放过程中点击时应该从头开始播放？？
-    play(songsItem:any,index:number){
+    play(songsItem: any, index: number) {
       // 先存一份
       this.playlist = songsItem
       // 将currentSongIndex覆盖掉
       this.currentSongIndex = index
-      // 拿到对应的歌曲的信息
-      this.defaultSong.id  = this.playlist[this.currentSongIndex].id
-      this.defaultSong.name = this.playlist[this.currentSongIndex].name
-      this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl
-      this.playlist[this.currentSongIndex].ar.forEach((ele)=>{
-        this.defaultSong.singerName = ele.name
-      })
+      if (songsItem[index].ar) {
+        // 拿到对应的歌曲的信息
+        this.defaultSong.id = this.playlist[this.currentSongIndex].id
+        this.defaultSong.name = this.playlist[this.currentSongIndex].name
+        this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl
+        this.playlist[this.currentSongIndex].ar.forEach((ele) => {
+          this.defaultSong.singerName = ele.name
+        })
+        return
+      }
+      if (songsItem[index].song.artists) {
+        let arr = []
+        this.defaultSong.id = this.playlist[this.currentSongIndex].id
+        this.defaultSong.name = this.playlist[this.currentSongIndex].name
+        this.defaultSong.picUrl = this.playlist[this.currentSongIndex].picUrl
+        this.playlist[this.currentSongIndex].song.artists.forEach((ele) => {
+          this.defaultSong.singerName = ele.name
+        })
+
+        
+      }
     },
-    // 播放下一曲
-    playNext(){
-      if(this.currentSongIndex>=this.playlist.length-1){ 
+    // 自动播放下一曲
+    playNext() {
+      if (this.currentSongIndex >= this.playlist.length - 1) {
         this.currentSongIndex = 0
-      }else{
+      } else {
         this.currentSongIndex++
       }
-      this.play(this.playlist,this.currentSongIndex)
+      this.play(this.playlist, this.currentSongIndex)
     },
+    // 手动播放上一首和下一首
+    // changeSong(item,index){
+    //   this.defaultSong = item
+    // },
     // 存储搜索结果
-    storageList(list,str){
+    storageList(list, str) {
       this.searchList = list
       console.log(list);
-      
+
       this.searchKeyWord = str
-    } 
+    }
   }
 
 })

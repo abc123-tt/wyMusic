@@ -70,7 +70,7 @@ const onClear = () => {
 
 // 播放一首歌曲
 const playSong = (item,index)=>{
-  $store.setSong(item,index);
+  $store.play(item,index);
 }
 // 播放全部歌曲
 const playAll = ()=>{
@@ -95,6 +95,7 @@ onMounted(() => {
 .container {
   background-color: #f6f6f6;
   padding: 0.3rem;
+  height: 100vh;
   .searchCom {
     display: flex;
     justify-content: space-between;

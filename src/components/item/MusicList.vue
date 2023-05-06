@@ -181,6 +181,6 @@ onMounted(async () => {
   height: 0.5px;
   background-color: #eee;
   padding: 0 !important;
-  margin: 0.8rem 0;
+  margin: 0.5rem 0;
 }
 </style>

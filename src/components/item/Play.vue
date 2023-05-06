@@ -1,7 +1,7 @@
 <template>
   <div class="play-box">
     <div class="play-left" @click="toLyric">
-      <div class="songImg" :class="[isRotate ? 'rotateImg' : '']">
+      <div class="songImg" :class="{rotateImg:$store.isPlay}">
         <img :src="$store.defaultSong.picUrl" alt="" />
       </div>
       <div class="songInfo">
@@ -14,94 +14,150 @@
     <div class="play-right">
       <van-icon
         class="playIcon"
-        name="play-circle-o"
-        v-if="isPlay"
+        name="pause-circle-o"
+        v-if="$store.isPlay"
         @click="playSong"
       />
       <van-icon
         class="playIcon"
-        name="pause-circle-o"
-        v-else
+        name="play-circle-o"
         @click="playSong"
+        v-else
       />
+      
+
       <svg-icon class="playlistIcon" iconName="playlist"></svg-icon>
     </div>
   </div>
   <audio
     ref="audio"
     @ended="onEnded"
+    controls
+    @durationchange="changeDur"
+    @timeupdate="updateTime"
     :src="`https://music.163.com/song/media/outer/url?id=${$store.defaultSong.id}.mp3`"
   ></audio>
+  <!-- popup要挂载在body才能获得层级最高 
+    Vue3：teleport="body"
+    Vue2：get-container="body"
+  -->
 
   <van-popup
     v-model:show="$store.isShowLyric"
     position="right"
     :style="{ width: '100%', height: '100%' }"
+    teleport="body"
   >
-    <LyricVue :musicInfo = "songData.musicInfo"></LyricVue>
+    <LyricVue :musicInfo="songData.musicInfo" @on-play="conPlay" :lyric-id="songData.lyricId"></LyricVue>
   </van-popup>
 </template>
 <script setup lang="ts">
 import LyricVue from '../Lyric.vue';
-import { onMounted, ref, watch, watchEffect, reactive } from 'vue';
+import router from '../../router';
+import { onMounted, ref, watch, watchEffect, reactive ,computed} from 'vue';
 import { useStore } from '../../store/index';
 import { useRouter, useRoute } from 'vue-router';
-import router from '../../router';
+import {getAPIdata} from '../../server/api'
 const $router = useRouter();
 const $route = useRoute();
 const $store = useStore();
-// 控制音乐播放器的播放和暂停
-const isPlay = ref<boolean>(true);
 const audio = ref(null);
-// 是否旋转歌曲头像
-const isRotate = ref<boolean>(false);
-// 是否正在播放歌曲
-const isPlaying = ref<boolean>(false);
+
 
 // 获取当前播放的歌曲的数据
 const songData = reactive<T>({
   musicInfo: [],
+  getLyric:[],
+  lyricId:''
 });
+
+// 接收子组件传过来的数据
+const conPlay = ()=>{
+  playSong()
+}
+
 const playSong = () => {
-  isPlay.value = !isPlay.value;
+   // 如果写在外面当歌词详情页点击暂停或播放时调用该函数，会重新取一次反，所以特效就不能做到同步
+  // $store.isPlay = !$store.isPlay
   if (audio.value.paused) {
     audio.value.play();
-    isRotate.value = !isRotate.value;
+    // 那就在播放和暂停时分开赋值
+    $store.isPlay = true
   } else {
     audio.value.pause();
-    isRotate.value = !isRotate.value;
+    $store.isPlay = false
   }
 };
 
 // 跳转到歌词详情页
 const toLyric = () => {
+
   songData.musicInfo = $store.defaultSong;
   $store.isShowLyric = true;
-  // 点击音乐播放器到详情页时将当前路径保存到本地
-  localStorage.setItem('historyPath', $route.path);
 };
-const goBack = () => {
-  // 在详情页点击返回时跳转到上一个页面
-  $router.push(localStorage.getItem('historyPath'));
-};
+// 当前播放时间
+const updateTime = ()=>{
+  $store.currentTime = audio._rawValue.currentTime
+}
+// 歌曲长度是否有变化
+const changeDur = ()=>{
+  $store.exam = audio._rawValue.duration
+  let sum = audio._rawValue.duration
+// 处理分钟
+  let min = Math.floor(sum / 60);
+  // 处理秒
+  let sec = Math.floor(sum % 60);
+  if (min < 10) {
+    min = "0" + min;
+  }
+  if (sec < 10) {
+    sec = "0" + sec;
+  } 
+  $store.duration = min+":"+sec
+}
 // 监听对象中某个属性要把它变为一个函数
 watch(
   () => $store.defaultSong.id,
-  () => {
+  (newVal,oldVal) => {
     // console.log('改变前的id：'+oldVal,'改变后的id:'+newVal);
     audio.value.autoplay = true;
-    isPlay.value = false;
-    isRotate.value = true;
+    $store.isPlay = true
+    // 将更新的id传过去歌词详情页
+    songData.lyricId = newVal
   }
 );
 
+
 // 监听歌曲是否播放完
 const onEnded = () => {
-  isPlay.value = true;
+  $store.isPlay = true;
   $store.playNext();
-  isPlay.value = false;
+  $store.isPlay = false;
 };
-onMounted(() => {});
+
+// 结束时间
+// const filterEndTime = computed(() => {
+//   let sum = audio._rawValue.duration
+  
+//   // 处理分钟
+//   let m = Math.floor(sum / 60);
+//   // 处理秒
+//   let s = Math.floor(sum % 60);
+//   if (m < 10) {
+//     m = "0" + m;
+//   }
+//   if (s < 10) {
+//     s = "0" + s;
+//   } 
+//  return  m+":"+s
+// });
+onMounted(() => {
+  // 由于歌词详情页要监听id改变时才获取歌词，所以要先将默认歌曲传过去获取歌词
+  songData.lyricId = $store.defaultSong.id
+  
+  
+});
+
 </script>
 <style lang="less" scoped>
 .play-box {

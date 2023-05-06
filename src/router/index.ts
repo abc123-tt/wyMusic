@@ -14,27 +14,27 @@ const routes = [
         name:'discovery',
         component:()=>import("../components/Home/Discovery.vue")
       },
-      {
-        path:'podcast',
-        name:'podcast',
-        component:()=>import('../components/Home/Podcast.vue')
-      },
+      // {
+      //   path:'podcast',
+      //   name:'podcast',
+      //   component:()=>import('../components/Home/PodCast.vue')
+      // },
       {
         path:'mine',
         name:'mine',
         component:()=>import('../components/Home/Mine.vue')
       },
-      {
-        path:'attention',
-        name:'attention',
-        component:()=>import('../components/Home/Attention.vue')
+      // {
+      //   path:'attention',
+      //   name:'attention',
+      //   component:()=>import('../components/Home/Attention.vue')
         
-      },
-      {
-        path:'community',
-        name:'community',
-        component:()=>import('../components/Home/Community.vue')
-      },
+      // },
+      // {
+      //   path:'community',
+      //   name:'community',
+      //   component:()=>import('../components/Home/Community.vue')
+      // },
     ]
   },
   {
@@ -74,7 +74,7 @@ const router = createRouter({
 })
 router.beforeEach((to,from,next)=>{
   const $store = useStore()
-  if(to.path == '/login'){
+  if(to.path ==  '/login'){
     $store.isPlayCom = false
     next()       
   }else{

@@ -17,7 +17,7 @@
             <span class="author">{{ playList.creator.nickname }}</span>
             <span><van-icon name="plus" /> 关注</span>
           </div>
-          <div class="score">8.5分<van-icon name="arrow" /></div>
+          <span class="score">8.5分<van-icon name="arrow" /></span>
         </div>
       </div>
 
@@ -92,7 +92,6 @@ const star = computed(()=>{
           margin-left: 0.15rem;
 
           &:last-child {
-            width: 1.1rem;
             height: 0.5rem;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 0.35rem;
@@ -105,13 +104,9 @@ const star = computed(()=>{
         }
       }
       .score {
-        width: 1.2rem;
-        height: 0.45rem;
+        padding: 0 .2rem;  
         background: rgba(255, 255, 255, 0.2);
         border-radius: 0.1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         color: #f1f8ff;
       }
     }

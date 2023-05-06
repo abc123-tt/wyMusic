@@ -39,9 +39,11 @@ const getStatus = async () => {
   // const test2 = await getAPIdata('GET',`/playlist/track/all?id=2480463352`)
   // console.log(test2);
 };
+
 onMounted(() => {
   // 获取登录之后的状态
   getStatus();
+
 });
 </script>
 <style lang="less" scoped></style>

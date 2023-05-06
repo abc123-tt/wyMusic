@@ -116,9 +116,6 @@ const toSearch = () => {
   $router.push('/search');
 };
 
-// 登录
-const goLogin = () => {};
-
 // 注销
 const loginOut = async () => {
   const logout = await getAPIdata('GET', '/logout');

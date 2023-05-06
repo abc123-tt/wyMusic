@@ -17,7 +17,8 @@ import  {
   Toast ,
   Empty ,
   Tab, 
-  Tabs
+  Tabs,
+  Progress
 }  from 'vant';
 
 let plugins = [
@@ -38,7 +39,8 @@ let plugins = [
   Toast ,
   Empty ,
   Tab, 
-  Tabs
+  Tabs,
+  Progress
 ]
 // 将app传进来之前要先暴露函数
 export default function getVant(app){

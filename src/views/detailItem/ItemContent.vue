@@ -1,6 +1,6 @@
 <template>
   <div class="music-list">
-    <van-sticky positioon="bottom" :offset-top="props.isTop ? '49.5' : '0'">
+    <van-sticky  width="100%" :offset-top="props.isTop ? '1.32rem' : '0'">
       <div class="listTitle">
         <div class="playAll">
           <van-icon class="playIcon" name="play-circle" @click="allPlay" />
@@ -56,7 +56,8 @@ import { onMounted, ref, reactive, defineProps } from 'vue';
 import { getAPIdata } from '../../server/api';
 import { useRoute } from 'vue-router';
 import { useStore } from '../../store/index';
-
+import {showFailToast } from 'vant';
+import PlayVue from '../../components/item/Play.vue'
 const store = useStore();
 const route = useRoute();
 
@@ -80,16 +81,23 @@ const getData = async () => {
 };
 
 // 播放单首歌曲
-const playSong = (item: any, index: number) => {
+const playSong = async (item: any, index: number) => {
+  
   // 将歌单传过去和点击时是哪首歌的索引值传过去，在那边将currentSongIndex覆盖掉，然后在歌单中播放索引值为当前值的歌曲就能实现精准播放
   // 例如播放第十一首歌：playlist[10]
   store.play(item, index);
   // console.log(store.currentSongIndex);
-
+  const res = await getAPIdata('GET',`/check/music?id=${item[index].id}`)
+  
+  if(!res.data.success){
+    showFailToast('对不起，该歌曲暂时无版权');
+    return false
+  }
+  
 };
 // 播放所有歌曲
 const allPlay = () => {
-  store.setAllSongs(songList.songs);
+  // store.setAllSongs(songList.songs);
   // 全部播放时将歌单传过去，并传一个默认值为0，表示从第一首歌开始播放，这样在播放过程中再次点击全部播放按钮就可以实现从第一首重新播放
   store.play(songList.songs,0);
 };
@@ -109,7 +117,6 @@ onMounted(() => {
     padding: 0.4rem 0.28rem;
     background-color: #fff;
     border-radius: 0.3rem 0.3rem 0 0;
-
     .playAll {
       display: flex;
       align-items: center;

@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, useAttrs } from 'vue'
 const app = createApp(App)
 import './style.css'
 import App from './App.vue'
@@ -16,6 +16,7 @@ import 'virtual:svg-icons-register'
 import {createPinia} from 'pinia'
 const store = createPinia()
 app.use(store)
+
 
 
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -42,5 +43,7 @@ app.component('svg-icon',SvgIcon)
 app.component('font-awesome-icon',FontAwesomeIcon)
 app.component('font-awesome-layers', FontAwesomeLayers)
 app.component('font-awesome-layers-text', FontAwesomeLayersText)
+
+
 // 这个挂载必须放在最后
 app.mount('#app')
