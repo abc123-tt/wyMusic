@@ -32,7 +32,6 @@
   <audio
     ref="audio"
     @ended="onEnded"
-    controls
     @durationchange="changeDur"
     @timeupdate="updateTime"
     :src="`https://music.163.com/song/media/outer/url?id=${$store.defaultSong.id}.mp3`"
@@ -91,7 +90,6 @@ const playSong = () => {
 
 // 跳转到歌词详情页
 const toLyric = () => {
-
   songData.musicInfo = $store.defaultSong;
   $store.isShowLyric = true;
 };
@@ -101,19 +99,8 @@ const updateTime = ()=>{
 }
 // 歌曲长度是否有变化
 const changeDur = ()=>{
-  $store.exam = audio._rawValue.duration
-  let sum = audio._rawValue.duration
-// 处理分钟
-  let min = Math.floor(sum / 60);
-  // 处理秒
-  let sec = Math.floor(sum % 60);
-  if (min < 10) {
-    min = "0" + min;
-  }
-  if (sec < 10) {
-    sec = "0" + sec;
-  } 
-  $store.duration = min+":"+sec
+  
+  $store.durationTime = audio._rawValue?.duration
 }
 // 监听对象中某个属性要把它变为一个函数
 watch(
@@ -126,8 +113,6 @@ watch(
     songData.lyricId = newVal
   }
 );
-
-
 // 监听歌曲是否播放完
 const onEnded = () => {
   $store.isPlay = true;
@@ -135,27 +120,9 @@ const onEnded = () => {
   $store.isPlay = false;
 };
 
-// 结束时间
-// const filterEndTime = computed(() => {
-//   let sum = audio._rawValue.duration
-  
-//   // 处理分钟
-//   let m = Math.floor(sum / 60);
-//   // 处理秒
-//   let s = Math.floor(sum % 60);
-//   if (m < 10) {
-//     m = "0" + m;
-//   }
-//   if (s < 10) {
-//     s = "0" + s;
-//   } 
-//  return  m+":"+s
-// });
 onMounted(() => {
   // 由于歌词详情页要监听id改变时才获取歌词，所以要先将默认歌曲传过去获取歌词
   songData.lyricId = $store.defaultSong.id
-  
-  
 });
 
 </script>

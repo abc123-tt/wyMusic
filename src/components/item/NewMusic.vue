@@ -25,7 +25,7 @@
       />
     </div>
 
-    <!-- 排行榜内容 -->
+    <!-- 推荐新音乐内容 -->
     <van-swipe
       class="my-swipe"
       :loop="false"

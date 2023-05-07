@@ -15,14 +15,15 @@ const $store = useStore();
 const $route = useRoute()
 const getStatus = async () => {
   // 扫码登录成功后将cookie保存到本地，请求用户信息时要带上
-  let loginCookie = localStorage.getItem('loginCookie');
+  let loginCookie = sessionStorage.getItem('loginCookie');
+  
   const res = await getAPIdata('GET', `/login/status?cookie=${loginCookie}`);
   // console.log('用户登录状态');
   // console.log(res);
 
     // 将用户id保存到本地，要请求用户详细信息时要用到，方便调试
-    localStorage.setItem('userID', res.data.data.account.id);
-    let userID = localStorage.getItem('userID');
+    sessionStorage.setItem('userID', res.data.data.account.id);
+    let userID = sessionStorage.getItem('userID');
     // 账号详细信息
     const accountInfo = await getAPIdata('GET', `/user/detail?uid=${userID}`);
     $store.accountDetail = accountInfo.data;

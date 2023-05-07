@@ -37,9 +37,7 @@ export const useStore = defineStore(StoreData.STORE, {
     // 保存当前歌曲的播放时间
     currentTime: 0,
     // 歌曲总时长
-    duration:0,
-    exam:0
-    
+    durationTime:0,
   }),
   // 类似computed: 修饰一些值
   getters: {
@@ -59,21 +57,23 @@ export const useStore = defineStore(StoreData.STORE, {
         this.defaultSong.id = this.playlist[this.currentSongIndex].id
         this.defaultSong.name = this.playlist[this.currentSongIndex].name
         this.defaultSong.picUrl = this.playlist[this.currentSongIndex].al.picUrl
+        let str  = ''
         this.playlist[this.currentSongIndex].ar.forEach((ele) => {
-          this.defaultSong.singerName = ele.name
+          str+=ele.name+' '
         })
+        this.defaultSong.singerName = str
         return
       }
       if (songsItem[index].song.artists) {
-        let arr = []
         this.defaultSong.id = this.playlist[this.currentSongIndex].id
         this.defaultSong.name = this.playlist[this.currentSongIndex].name
         this.defaultSong.picUrl = this.playlist[this.currentSongIndex].picUrl
+        // console.log(this.playlist[this.currentSongIndex].song.artists[0].name);
+        let str  = ''
         this.playlist[this.currentSongIndex].song.artists.forEach((ele) => {
-          this.defaultSong.singerName = ele.name
+          str+=ele.name+' '
         })
-
-        
+        this.defaultSong.singerName = str
       }
     },
     // 自动播放下一曲

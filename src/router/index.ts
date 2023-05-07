@@ -78,9 +78,9 @@ router.beforeEach((to,from,next)=>{
     $store.isPlayCom = false
     next()       
   }else{
-    // const cookie = localStorage.getItem('loginCookie')
+    const cookie = sessionStorage.getItem('loginCookie')
     $store.isPlayCom = true
-    // if(!cookie) return next('/login')
+    if(!cookie) return next('/login')
     next()
   }
   

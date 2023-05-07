@@ -140,7 +140,7 @@ const listDetail = (id) => {
 };
 
 onMounted(async () => {
-  let userID = localStorage.getItem('userID');
+  let userID = sessionStorage.getItem('userID');
   // 账号详细信息
   const accountInfo = await getAPIdata('GET', `/user/detail?uid=${userID}`);
   data.accountDetail = accountInfo.data;

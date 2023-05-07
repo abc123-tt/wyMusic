@@ -80,10 +80,12 @@
           step="0.05"
           class="progress"
           min="0"
-          :max="$store.exam"
+          :max="$store.durationTime"
           v-model="$store.currentTime"
         >
-        <span class="endTime">{{$store.duration}}</span>
+
+        <span class="endTime">{{filterEndTime}}</span>
+        <!-- <span>{{test}}</span> -->
       </div>
       <ul class="conBottom">
         <li class="play-mode">
@@ -155,7 +157,7 @@ import { Vue3Marquee } from "vue3-marquee";
 import { getAPIdata } from "../server/api";
 import "vue3-marquee/dist/style.css";
 const $store = useStore();
-const lyricDiv = ref();
+const lyricDiv = ref(null);
 const info = defineProps<{
   musicInfo: {
     type: Array;
@@ -183,6 +185,7 @@ const emit = defineEmits<{
 // 暂停与播放
 const playMusic = () => {
   $store.isPlay = !$store.isPlay;
+  // 通知父组件执行播放函数
   emit("on-play");
 };
 // 上/下一曲
@@ -222,7 +225,7 @@ const getLyric = async () => {
     return { min, sec, mill, lrc, time };
   });
   data.lyric = arr;
-  console.log(data.lyric);
+  // console.log(data.lyric);
 
   // 获取下一句歌词
   arr.forEach((item, index) => {
@@ -234,6 +237,13 @@ const getLyric = async () => {
     }
   });
 };
+
+
+// const moveBar = (e)=>{
+//   console.log(e);
+  
+// } 
+
 // 监听歌曲id变化时获取对应的歌词数据
 watch(
   () => $store.defaultSong.id,
@@ -241,6 +251,7 @@ watch(
     getLyric();
   }
 );
+// 监听歌曲时间走动时歌词随着滚动
 watch(
   () => $store.currentTime,
   (oldVal, newVal) => {
@@ -256,11 +267,8 @@ watch(
     }, 10);
   }
 );
-watch(()=>$store.duration,()=>{
-  console.log(1);
-  
-})
-// 开始时间
+
+// 过滤歌曲开始时间
 const filterStartTime = computed(() => {
   // 处理分钟
   let m = Math.floor($store.currentTime / 60);
@@ -271,12 +279,29 @@ const filterStartTime = computed(() => {
   }
   if (s < 10) {
     s = "0" + s;
-  } 
- return m+":"+s
+  }
+  return m + ":" + s;
 });
-
+// 过滤歌曲总时长
+const filterEndTime = computed(()=>{
+  let sum = $store.durationTime;
+    // 处理分钟
+    let min = Math.floor(sum / 60);
+    // 处理秒
+    let sec = Math.floor(sum % 60);
+    if (min < 10) {
+      min = "0" + min;
+    }
+    if (sec < 10) {
+      sec = "0" + sec;
+    }
+    return min + ":" + sec;
+  
+})
 onMounted(() => {
   getLyric();
+  
+  
 });
 </script>
 <style lang="less" scoped>
@@ -414,16 +439,17 @@ onMounted(() => {
       padding: 0 0.65rem;
       display: flex;
       align-items: center;
-      .startTime {
-        padding-right: 0.3rem;
-        font-size: 0.2rem;
+      span{
         display: inline-block;
         width: 1rem;
+        mix-blend-mode: difference;
+        filter: invert(.5);
+      }
+      .startTime {
+        padding-right: 0.3rem;
       }
       .endTime {
         padding-left: 0.3rem;
-        width: 1rem;
-        display: inline-block;
       }
       .progress {
         width: 100%;

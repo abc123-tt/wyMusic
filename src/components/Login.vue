@@ -44,7 +44,7 @@ const qrimg = ref<string>();
   };
 // 检查登录状态
   const checkLogin = () => {
-    // 每3秒check一次登录状态
+    // 每5秒check一次登录状态
     let check = setInterval(async () => {
       // 获取最新时间戳
       let nowTime2 = new Date().getTime();
@@ -60,7 +60,7 @@ const qrimg = ref<string>();
       }
       if (res.data.code == 803) {
         showSuccessToast(res.data.message);
-        localStorage.setItem('loginCookie',res.data.cookie)
+        sessionStorage.setItem('loginCookie',res.data.cookie)
        let delay =  setTimeout(()=>{
           $router.push('/discovery') 
         },2000)
