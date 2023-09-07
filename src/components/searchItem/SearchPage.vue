@@ -200,7 +200,7 @@ onMounted(async () => {
     font-size: 0.7rem;
   }
   /deep/.search-input {
-    font-size: 0.1rem;
+    font-size: 0.5rem;
     width: 80%;
     padding: 0;
     border-radius: 0.4rem;
@@ -215,7 +215,7 @@ onMounted(async () => {
     }
   }
   .search {
-    font-size: 0.8rem;
+    font-size: 0.4rem;
     font-family: '宋体';
     font-weight: 700;
   }
