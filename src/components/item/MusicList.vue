@@ -95,7 +95,7 @@ const listDetail = (id) => {
 onMounted(async () => {
   const res = await getAPIdata("GET", "/personalized?limit=10");
   data.musicList = res.data.result;
-  // 处理播放数量显示的格式
+
   res.data.result.forEach((item) => {
     if (item.playCount >= 100000000) {
       item.playCount = (item.playCount / 100000000).toFixed(1) + "亿";
@@ -117,7 +117,7 @@ onMounted(async () => {
     color: @fontColor;
     font-weight: bold;
     b {
-      margin-right: 5px;
+      padding:0 .3rem 0 0;
     }
   }
   &-more {
@@ -162,6 +162,7 @@ onMounted(async () => {
       color: @fontColor;
       margin-top: 0.1rem;
       overflow: hidden;
+      line-height: .4rem;
       text-overflow: ellipsis;
       display: -webkit-box; //将对象作为弹性伸缩盒子模型显示。
       -webkit-box-orient: vertical; //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）

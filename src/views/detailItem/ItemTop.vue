@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- 歌单信息 -->
-    <!-- 由于页面刷新时数据还没更新会导致数据丢失 -->
-    <!-- 判断一下如果playList.creator不存在不要渲染下面的数据，这样做是为了拖延一下时间给数据渲染 -->
     <main class="song-content" v-if="playList.creator">
       <div class="song-desc">
         <img class="song-pic" :src="playList.coverImgUrl" alt="" />
@@ -139,7 +136,7 @@ const star = computed(()=>{
         justify-content: center;
         &:last-child {
           margin-right: 0;
-          background-color: #fe2e4e;
+          background-color: #346ced;
         }
         span {
           font-size: 0.35rem;

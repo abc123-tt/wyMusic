@@ -6,23 +6,55 @@
         :src="data.accountDetail.profile?.avatarUrl"
         alt=""
         class="headPic"
+        v-if="$store.isLogin"
       />
-      <div class="info">
+      <div class="nologin" v-else>
+        <van-icon
+          name="contact"
+          class="userIcon"
+        />
+      </div>
+      <div
+        class="info"
+        v-if="$store.isLogin"
+      >
         <h1 class="nickName">{{ data.accountDetail.profile?.nickname }}</h1>
         <p class="baseinfo">
-          <!-- 加上可选链操作符之后才能访问到profile里的数据 -->
           <span>{{ data.accountDetail.profile?.follows }} 关注</span>
           <span>{{ data.accountDetail.profile?.followeds }} 粉丝</span>
           <span>Lv {{ data.accountDetail.level }}</span>
         </p>
       </div>
+      <h1
+        v-else
+        class="goLogin"
+        @click="$router.push('/login')"
+      >立即登录 <van-icon
+          name="arrow"
+          class="arrow"
+        /></h1>
     </div>
     <!-- 我喜欢的音乐 -->
-    <div class="loveMusic" @click="toDetail">
-      <img class="lovePic" :src="data.loveMusic.coverImgUrl" alt="" />
-      <div class="loveName">
+    <div
+      class="loveMusic"
+      @click="toDetail"
+    >
+      <img
+        class="lovePic"
+        :src="data.loveMusic.coverImgUrl"
+        alt=""
+        v-if="$store.isLogin"
+      />
+      <div v-else class="no-lovePic">
+        <van-icon name="like" class="likeIcon"/>
+      </div>
+      <div class="loveName" v-if="$store.isLogin">
         <b>我{{ data.loveMusic.name }}</b>
         <span>{{ data.loveMusic.trackCount }}首</span>
+      </div>
+      <div class="no-loveName" v-else>
+        <strong>我喜欢的音乐</strong>
+        <span>0首</span>
       </div>
     </div>
 
@@ -33,19 +65,20 @@
         scrollspy
         sticky
         background="#ecebec"
-        color="#f6314e"
+        color="#346ced"
         title-inactive-color="#9896a3"
         title-active-color="#272f3e"
       >
         <van-tab title="创建歌单">
           <div class="content createList">
             <div class="createTit">
-              <span class="creLeft"
-                >创建歌单({{ data.myCreateList.length }}个)</span
-              >
+              <span class="creLeft">创建歌单({{ data.myCreateList.length }}个)</span>
               <div class="creRight">
                 <van-icon name="plus" />
-                <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
+                <font-awesome-icon
+                  class="more-icon"
+                  icon="ellipsis-vertical"
+                />
               </div>
             </div>
             <!-- 歌单列表 -->
@@ -56,12 +89,19 @@
                 :key="index"
                 @click="listDetail(item.id)"
               >
-                <img :src="item.coverImgUrl" alt="" class="listPic" />
+                <img
+                  :src="item.coverImgUrl"
+                  alt=""
+                  class="listPic"
+                />
                 <div class="listName">
                   <b>{{ item.name }}</b>
                   <span>{{ item.trackCount }}首</span>
                 </div>
-                <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
+                <font-awesome-icon
+                  class="more-icon"
+                  icon="ellipsis-vertical"
+                />
               </li>
             </ul>
           </div>
@@ -69,11 +109,12 @@
         <van-tab title="收藏歌单">
           <div class="content starList">
             <div class="createTit">
-              <span class="creLeft"
-                >收藏歌单({{ data.myStarList.length }}个)</span
-              >
+              <span class="creLeft">收藏歌单({{ data.myStarList.length }}个)</span>
               <div class="rightIcon">
-                <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
+                <font-awesome-icon
+                  class="more-icon"
+                  icon="ellipsis-vertical"
+                />
               </div>
             </div>
             <!-- 歌单列表 -->
@@ -84,12 +125,19 @@
                 :key="index"
                 @click="listDetail(item.id)"
               >
-                <img :src="item.coverImgUrl" alt="" class="listPic" />
+                <img
+                  :src="item.coverImgUrl"
+                  alt=""
+                  class="listPic"
+                />
                 <div class="listName">
-                  <b>{{ item.name }}</b>
+                  <b>{{item.name}}</b>
                   <span>{{ item.trackCount }}首</span>
                 </div>
-                <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
+                <font-awesome-icon
+                  class="more-icon"
+                  icon="ellipsis-vertical"
+                />
               </li>
             </ul>
           </div>
@@ -104,7 +152,11 @@
                 <span class="keyTow">80年代</span>
                 <span>老歌</span>
               </div>
-              <van-button round type="danger"><span>试试看</span></van-button>
+              <van-button
+                round
+                type="danger"
+                color="#b1ccf9"
+              ><span>试试看</span></van-button>
             </div>
           </div>
         </van-tab>
@@ -113,10 +165,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, toRef, toRaw, ref } from 'vue';
-import { useStore } from '../../store/index';
-import { getAPIdata } from '../../server/api';
-import { useRouter } from 'vue-router';
+import { onMounted, reactive, toRef, toRaw, ref } from "vue";
+import { useStore } from "../../store/index";
+import { getAPIdata } from "../../server/api";
+import { useRouter } from "vue-router";
 const $router = useRouter();
 const $store = useStore();
 let data = reactive({
@@ -132,28 +184,41 @@ let data = reactive({
 const current = ref<string>();
 const listDetail = (id) => {
   $router.push({
-    path: '/detail',
+    path: "/detail",
     query: {
       id,
     },
   });
 };
+const getUserInfo = async () => {
+  let loginCookie = sessionStorage.getItem("loginCookie");
+  if (loginCookie) {
+    let userID = sessionStorage.getItem("userID");
+    // 账号详细信息
+    const accountInfo = await getAPIdata("GET", `/user/detail?uid=${userID}`);
+    data.accountDetail = accountInfo.data;
 
-onMounted(async () => {
-  let userID = sessionStorage.getItem('userID');
-  // 账号详细信息
-  const accountInfo = await getAPIdata('GET', `/user/detail?uid=${userID}`);
-  data.accountDetail = accountInfo.data;
-  // console.log(data.accountDetail);
+    $store.accountDetail = data.accountDetail;
 
-  // 请求用户的歌单
-  const mylist = await getAPIdata('GET', `/user/playlist?uid=${userID}`);
-  data.myCreateList = mylist.data.playlist.splice(1, 13);
+    // 请求用户的歌单
+    const mylist = await getAPIdata("GET", `/user/playlist?uid=${userID}`);
+    data.myCreateList = mylist.data.playlist.splice(1, 13);
 
-  data.myStarList = mylist.data.playlist.splice(1, 7);
+    data.myStarList = mylist.data.playlist.splice(1, 7);
 
-  data.loveMusic = mylist.data.playlist[0];
-  data.loveMusic.name = data.loveMusic.name.slice(4);
+    data.loveMusic = mylist.data.playlist[0];
+    data.loveMusic.name = data.loveMusic.name.slice(8);
+  }
+};
+onMounted(() => {
+  getUserInfo();
+   const cookie = sessionStorage.getItem('loginCookie')
+  if(cookie){
+    $store.isLogin = true
+  }else{
+     $store.isLogin = false
+  }
+  
 });
 </script>
 <style lang="less" scoped>
@@ -198,6 +263,33 @@ onMounted(async () => {
         }
       }
     }
+    .goLogin {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      .arrow {
+        font-size: 0.6rem;
+        font-weight: 700;
+      }
+    }
+  }
+  .nologin {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #f7ebeb;
+    position: absolute;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .userIcon {
+      font-size: 1.3rem;
+      color: rgb(232, 138, 138);
+    }
   }
   .loveMusic {
     padding: 0.4rem;
@@ -211,6 +303,20 @@ onMounted(async () => {
       height: 1.5rem;
       border-radius: 0.3rem;
     }
+    .no-lovePic{
+      background-color: #9999;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .likeIcon{
+        font-size: .8rem;
+        color: #fff;
+      }
+    }
+
     .loveName {
       display: flex;
       flex-direction: column;
@@ -219,7 +325,21 @@ onMounted(async () => {
       b {
         margin-bottom: 0.2rem;
         font-size: 0.4rem;
-        font-family: '黑体';
+        font-family: "黑体";
+      }
+      span {
+        color: #999;
+      }
+    }
+    .no-loveName{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 0.3rem;
+      strong {
+        margin-bottom: 0.2rem;
+        font-size: 0.4rem;
+        font-family: "黑体";
       }
       span {
         color: #999;
@@ -242,7 +362,7 @@ onMounted(async () => {
       .creLeft {
         font-weight: normal;
         font-size: 0.2rem;
-        font-family: '黑体';
+        font-family: "黑体";
       }
       .creRight {
         width: 18%;
@@ -273,6 +393,7 @@ onMounted(async () => {
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
+          padding:.1rem 0;
         }
         span {
           color: #999;
@@ -293,43 +414,44 @@ onMounted(async () => {
   }
   .helper {
     margin-bottom: 3rem;
-    padding: .4rem .3rem;
-    .title{
-      font-size: .2rem;
+    padding: 0.4rem 0.3rem;
+    .title {
+      font-size: 0.2rem;
       color: #999;
-      margin:.3rem;
+      margin: 0.3rem;
     }
-    .content{
+    .content {
       text-align: center;
       color: #999;
-      .filter{
-        padding: .4rem 0;
-        font-size: .3rem;
-        .keyOne,.keyTow{
+      .filter {
+        padding: 0.4rem 0;
+        font-size: 0.3rem;
+        .keyOne,
+        .keyTow {
           display: inline-block;
-          padding: .1rem .2rem;
-          background-color: rgba(237, 132, 132,.3);
+          padding: 0.1rem 0.2rem;
+          background-color: rgba(237, 132, 132, 0.3);
           color: rgb(246, 71, 71);
-          font-family: '黑体';
-          border-radius: .1rem;
+          font-family: "黑体";
+          border-radius: 0.1rem;
         }
-        .keyTow{
+        .keyTow {
           color: rgb(106, 71, 182);
-          background-color: rgba(87, 158, 245,.3);
-          margin: 0 .3rem;
+          background-color: rgba(87, 158, 245, 0.3);
+          margin: 0 0.3rem;
         }
       }
     }
   }
 }
-.van-button__content{
+.van-button__content {
   height: 0;
 }
-.van-button{
-  height: .8rem;
-  span{
-    padding: .3rem;
-    font-size: .2rem;
+.van-button {
+  height: 0.8rem;
+  span {
+    padding: 0.3rem;
+    font-size: 0.2rem;
   }
 }
 </style>

@@ -1,15 +1,23 @@
 <template>
   <div class="music-list">
-    <van-sticky  width="100%" :offset-top="props.isTop ? '1.32rem' : '0'">
+    <van-sticky
+      width="100%"
+      :offset-top="props.isTop ? '1.32rem' : '0'"
+    >
       <div class="listTitle">
         <div class="playAll">
-          <van-icon class="playIcon" name="play-circle" @click="allPlay" />
-          <b
-            >播放全部 <span>({{ songList.songs.length }})</span></b
-          >
+          <van-icon
+            class="playIcon"
+            name="play-circle"
+            @click="allPlay"
+          />
+          <b>播放全部 <span>({{ songList.songs.length }})</span></b>
         </div>
         <div class="downLoad">
-          <van-icon class="down-icon" name="down" />
+          <van-icon
+            class="down-icon"
+            name="down"
+          />
           <font-awesome-icon icon="fa-list-check"></font-awesome-icon>
         </div>
       </div>
@@ -30,81 +38,102 @@
             <span class="listId">{{ index + 1 }}</span>
             <div class="songName-box">
               <p class="songName">{{ item.name }}</p>
-              <span v-if="item.fee != 8" class="vip">VIP</span>
+              <span
+                v-if="item.fee != 8"
+                class="vip"
+              >VIP</span>
               <span
                 class="singer"
                 v-for="(singerName, index) in item.ar"
                 :key="index"
-                >{{ singerName.name
-                }}<span v-if="item.ar.length >= 2">&nbsp;</span></span
-              >
+              >{{ singerName.name
+                }}<span v-if="item.ar.length >= 2">&nbsp;</span></span>
             </div>
           </div>
           <div class="song-right">
             <div class="mv-icon">
-              <van-icon name="play-circle-o" v-if="item.mv != 0" />
-              <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
+              <van-icon
+                @click="playMV(item.mv)"
+                name="play-circle-o"
+                v-if="item.mv != 0"
+              />
+              <font-awesome-icon
+                class="more-icon"
+                icon="ellipsis-vertical"
+              />
             </div>
           </div>
         </li>
       </ul>
     </div>
   </div>
+  <div
+    class="loadingBox"
+    v-if="isLoading"
+  >
+
+    <van-loading
+      color="#fff"
+      class="loadingIcon"
+      size="60px"
+      vertical
+      type="spinner"
+    >加载中...</van-loading>
+  </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, reactive, defineProps } from 'vue';
-import { getAPIdata } from '../../server/api';
-import { useRoute } from 'vue-router';
-import { useStore } from '../../store/index';
-import {showFailToast } from 'vant';
-import PlayVue from '../../components/item/Play.vue'
+import { onMounted, ref, reactive, defineProps } from "vue";
+import { getAPIdata } from "../../server/api";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "../../store/index";
+import { showFailToast } from "vant";
+import PlayVue from "../../components/item/Play.vue";
 const store = useStore();
 const route = useRoute();
-
-
-// 歌曲数据
+const router = useRouter();
 const songList = reactive({
   songs: [] as any[],
 });
-// 获取父组件传过来的数据
+const isLoading = ref<boolean>(false);
 const props = defineProps<{
-  // playList;
-  // 控制播放全部的吸附的偏移值
   isTop: any;
 }>();
 const id = route.query.id;
-// 获取歌曲数据
+
 const getData = async () => {
-  const res = await getAPIdata('GET', `/playlist/track/all?id=${id}&limit=30`);
+  const res = await getAPIdata("GET", `/playlist/track/all?id=${id}&limit=30`);
   songList.songs = res.data.songs;
-  // console.log(songList.songs);
 };
 
 // 播放单首歌曲
 const playSong = async (item: any, index: number) => {
-  
-  // 将歌单传过去和点击时是哪首歌的索引值传过去，在那边将currentSongIndex覆盖掉，然后在歌单中播放索引值为当前值的歌曲就能实现精准播放
-  // 例如播放第十一首歌：playlist[10]
   store.play(item, index);
-  // console.log(store.currentSongIndex);
-  const res = await getAPIdata('GET',`/check/music?id=${item[index].id}`)
-  
-  if(!res.data.success){
-    showFailToast('对不起，该歌曲暂时无版权');
-    return false
+  const res = await getAPIdata("GET", `/check/music?id=${item[index].id}`);
+  if (!res.data.success) {
+    showFailToast("对不起，该歌曲暂时无版权");
+    return false;
   }
-  
 };
 // 播放所有歌曲
 const allPlay = () => {
-  // store.setAllSongs(songList.songs);
-  // 全部播放时将歌单传过去，并传一个默认值为0，表示从第一首歌开始播放，这样在播放过程中再次点击全部播放按钮就可以实现从第一首重新播放
-  store.play(songList.songs,0);
+  store.play(songList.songs, 0);
 };
-
+// 跳转到mv页面
+const playMV = (mvId) => {
+  isLoading.value = true;
+  let timer = null;
+  setTimeout(() => {
+    router.push({
+      path: "/mv",
+      query: {
+        id: mvId,
+      },
+    });
+  }, 1500);
+  clearTimeout(timer);
+};
 onMounted(() => {
   getData();
-  
 });
 </script>
 <style lang="less" scoped>
@@ -123,7 +152,7 @@ onMounted(() => {
       .playIcon {
         margin-right: 0.3rem;
         font-size: 0.6rem;
-        color: #fc473c;
+        color: #346ced;
       }
       b {
         font-size: 0.39rem;
@@ -206,7 +235,18 @@ onMounted(() => {
     }
   }
 }
-.isActive {
-  color: #fc473c;
+.loadingBox {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  height: 100vh;
+  z-index: 1111111;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .loadingIcon {
+    position: absolute;
+    top: 9rem;
+    left: 4.3rem;
+  }
 }
 </style>

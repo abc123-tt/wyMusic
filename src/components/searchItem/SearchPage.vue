@@ -96,7 +96,7 @@ import SearchVue from '../../views/SearchCom.vue';
 import localData from '../../plugin/localData.js';
 import SearchListVue from '../item/SearchList.vue';
 import { onMounted, onUnmounted, reactive, ref, watch, computed } from 'vue';
-import { showNotify } from 'vant';
+import { showFailToast  } from 'vant';
 import { showConfirmDialog } from 'vant';
 import { showToast } from 'vant';
 import { getAPIdata } from '../../server/api';
@@ -106,10 +106,10 @@ import { useStore } from '../../store/index';
 const $store = useStore();
 const router = useRouter();
 // 存放搜索历史
-const data = reactive<Object<T>>({
+const data = reactive<Object<Array>>({
   keyWordArray: [],
-});
-const searchData = reactive<Object<T>>({
+}); 
+const searchData = reactive<Object<Array>>({
   hotList: [],
   booksData: [],
   searchList: [],
@@ -122,9 +122,13 @@ const myInput = ref(null);
 // 搜索
 const toSearch = async () => {
   // 对输入框做过滤
+  if(searchValue.value == null){
+    showFailToast('请输入内容');
+    return 
+  }
   const keyWord = searchValue.value.trim();
-  if (keyWord === '' || keyWord == ' ') {
-    showNotify({ type: 'danger', message: '请输入内容', duration: 2000 });
+  if (keyWord == '' || keyWord == ' ') {
+    showFailToast('不能为空');
     searchValue.value = '';
     return false;
   }
@@ -138,7 +142,6 @@ const toSearch = async () => {
     'GET',
     `/cloudsearch?keywords=${searchValue.value}`
   );
-
   searchData.searchList = res.data.result.songs;
   $store.storageList(searchData.searchList,searchValue.value);
   router.push('/searchlist');

@@ -4,10 +4,11 @@
     alt=""
     class="backgroundImg"
   />
+  <div class="flow"></div>
   <div class="container">
     <div class="topNav">
       <van-icon
-        name="arrow-left"
+        name="arrow-down"
         @click="goBack"
         class="backIcon"
       />
@@ -65,6 +66,7 @@
           class="menu"
           v-for="(item, index) in data.iconData"
           :key="index"
+          @click="toComment(index)"
         >
           <svg-icon
             :iconName="item"
@@ -85,7 +87,7 @@
         >
 
         <span class="endTime">{{filterEndTime}}</span>
-        <!-- <span>{{test}}</span> -->
+
       </div>
       <ul class="conBottom">
         <li class="play-mode">
@@ -141,6 +143,27 @@
       </ul>
     </div>
   </div>
+  <!--顶部返回 -->
+  <div
+    class="back"
+    v-if="$store.isShowComment"
+  >
+    <van-icon
+      name="arrow-left"
+      class="goBack"
+      @click="backOff"
+    />
+    <span>评论({{totalCom}})</span>
+  </div>
+  <van-popup
+    v-model:show="$store.isShowComment"
+    position="right"
+    :style="{ width: '100%', height: '100%' }"
+  >
+    <CommentVue @on-click="getComTotal"></CommentVue>
+
+  </van-popup>
+  
 </template>
 <script setup lang="ts">
 import {
@@ -155,9 +178,14 @@ import {
 import { useStore } from "../store/index";
 import { Vue3Marquee } from "vue3-marquee";
 import { getAPIdata } from "../server/api";
+import { useRouter } from "vue-router";
 import "vue3-marquee/dist/style.css";
+import CommentVue from "../views/Comment.vue";
 const $store = useStore();
+const $router = useRouter();
 const lyricDiv = ref(null);
+const totalCom = ref<string>();
+const comCentent = ref<string>('')
 const info = defineProps<{
   musicInfo: {
     type: Array;
@@ -169,7 +197,8 @@ const info = defineProps<{
   };
 }>();
 
-const showLyric = ref(true);
+const showLyric = ref<boolean>(true);
+
 const data = reactive({
   iconData: ["like", "download", "music_bell", "comment", "more"],
   lyric: [],
@@ -178,14 +207,13 @@ const goBack = () => {
   $store.isShowLyric = false;
   showLyric.value = true;
 };
-// 通知父组件调用播放与暂停函数
+// 接收子组件发过来的播放信号
 const emit = defineEmits<{
   (event: "on-play");
 }>();
 // 暂停与播放
 const playMusic = () => {
   $store.isPlay = !$store.isPlay;
-  // 通知父组件执行播放函数
   emit("on-play");
 };
 // 上/下一曲
@@ -205,17 +233,15 @@ const getLyric = async () => {
     "GET",
     `/lyric?id=${$store.defaultSong.id}`
   );
-  // 消除最后一个空行
-  // data.lyric = lyricRes.data.lrc.lyric.trim();
+  console.log(lyricRes.data);
+  
   let arr = lyricRes.data.lrc.lyric.split("\n").map((item, index) => {
     let min = item.slice(1, 3);
     let sec = item.slice(4, 6);
     let mill = item.slice(7, 10);
     let lrc = item.slice(11, item.length);
 
-    // 歌曲的播放时间转为毫秒
-    let time =
-      parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
+    let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
 
     if (isNaN(Number(mill))) {
       mill = item.slice(7, 9);
@@ -225,54 +251,39 @@ const getLyric = async () => {
     return { min, sec, mill, lrc, time };
   });
   data.lyric = arr;
-  // console.log(data.lyric);
-
-  // 获取下一句歌词
+  console.log(arr);
+  
   arr.forEach((item, index) => {
     if (index === arr.length - 1 || isNaN(arr[index + 1].time)) {
-      // 没有next会自动创建
       item.next = 10000000;
     } else {
+      // 当前这一句的next = 下一句的time
       item.next = arr[index + 1].time;
     }
   });
 };
-
-
-// const moveBar = (e)=>{
-//   console.log(e);
-  
-// } 
-
-// 监听歌曲id变化时获取对应的歌词数据
+watch(
+  () => $store.currentTime,
+  (oldVal, newVal) => {
+    const p = document.querySelector("p.active");
+    setTimeout(() => {
+      if (p && p.offsetTop > 300) {
+        lyricDiv.value.scrollTop = p.offsetTop - 280;
+      }
+    }, 10);
+  }
+);
 watch(
   () => $store.defaultSong.id,
   (oldVal, newVal) => {
     getLyric();
   }
 );
-// 监听歌曲时间走动时歌词随着滚动
-watch(
-  () => $store.currentTime,
-  (oldVal, newVal) => {
-    const p = document.querySelector("p.active");
-    // 因为第一次没有偏移所以要加上p的判断条件
 
-    setTimeout(() => {
-      // 需要p存在否则会报错
-      if (p && p.offsetTop > 300) {
-        lyricDiv.value.scrollTop = p.offsetTop - 280;
-        // lyricDiv.style.transform = `transformY`
-      }
-    }, 10);
-  }
-);
 
 // 过滤歌曲开始时间
 const filterStartTime = computed(() => {
-  // 处理分钟
   let m = Math.floor($store.currentTime / 60);
-  // 处理秒
   let s = Math.floor($store.currentTime % 60);
   if (m < 10) {
     m = "0" + m;
@@ -283,28 +294,41 @@ const filterStartTime = computed(() => {
   return m + ":" + s;
 });
 // 过滤歌曲总时长
-const filterEndTime = computed(()=>{
+const filterEndTime = computed(() => {
   let sum = $store.durationTime;
-    // 处理分钟
-    let min = Math.floor(sum / 60);
-    // 处理秒
-    let sec = Math.floor(sum % 60);
-    if (min < 10) {
-      min = "0" + min;
-    }
-    if (sec < 10) {
-      sec = "0" + sec;
-    }
-    return min + ":" + sec;
-  
-})
+  let min = Math.floor(sum / 60);
+  let sec = Math.floor(sum % 60);
+  if (min < 10) {
+    min = "0" + min;
+  }
+  if (sec < 10) {
+    sec = "0" + sec;
+  }
+  return min + ":" + sec;
+});
+
+// -----------------------------------------------
+
+// 获取子组件传进来的总评论数
+const getComTotal = (total: string) => {
+  totalCom.value = total;
+};
+// 评论区
+const toComment = (i) => {
+  if (i == 3) {
+    $store.isShowComment = true;
+  }
+};
+// 返回
+const backOff = () => {
+  $store.isShowComment = false;
+};
 onMounted(() => {
   getLyric();
-  
-  
 });
 </script>
 <style lang="less" scoped>
+@fontColor: #5e6571;
 .backgroundImg {
   width: 100%;
   height: 100%;
@@ -312,7 +336,17 @@ onMounted(() => {
   position: absolute;
   left: 0;
   top: 0;
+  z-index: -2;
+}
+.flow {
+  width: 100%;
+  height: 100%;
   z-index: -1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.3);
+  filter: blur(0.9rem);
 }
 .container {
   height: 100%;
@@ -334,8 +368,6 @@ onMounted(() => {
         color: #fff;
         margin-bottom: 0.2rem;
         display: block;
-        mix-blend-mode: difference;
-        filter: invert(0.8);
         .vue3-marquee {
           overflow: hidden;
         }
@@ -350,7 +382,6 @@ onMounted(() => {
     .backIcon {
       font-size: 0.8rem;
       color: #fff;
-      mix-blend-mode: difference;
     }
     .shareIcon {
       width: 0.8rem;
@@ -370,7 +401,7 @@ onMounted(() => {
       position: absolute;
       left: 45%;
       top: -8%;
-      transform-origin: 0 0;
+      transform-origin: 0 0; // 锁定原点
       transform: rotate(-30deg);
       z-index: 111;
       transition: all 0.3s ease-in;
@@ -439,11 +470,10 @@ onMounted(() => {
       padding: 0 0.65rem;
       display: flex;
       align-items: center;
-      span{
+      span {
         display: inline-block;
         width: 1rem;
-        mix-blend-mode: difference;
-        filter: invert(.5);
+        color: #fff;
       }
       .startTime {
         padding-right: 0.3rem;
@@ -489,6 +519,28 @@ onMounted(() => {
     }
   }
 }
+// 顶部返回
+.back {
+  z-index: 111111;
+  position: fixed;
+  top: 0;
+  padding: 0.2rem 0;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 0 0 0.2rem 0.2rem;
+  width: 100%;
+  .goBack {
+    font-size: 0.8rem;
+  }
+  span {
+    font-size: 0.5rem;
+    margin-left: 0.4rem;
+    font-weight: 700;
+    color: @fontColor;
+  }
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

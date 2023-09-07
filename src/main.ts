@@ -34,9 +34,7 @@ app.config.warnHandler = () => null
 //使用font-awesome
 getFontIcon(library)
 
-// 3. 注册你需要的组件
-// 要放在#app前
-// 将app传到vant.js里面注册
+
 getVant(app)
 app.use(router)
 app.component('svg-icon',SvgIcon)

@@ -1,13 +1,10 @@
 <template>
   <div class="box">
     <header>
-      <!-- 搜索 -->
       <SearchVue class="searchCom">
-        <!-- 菜单按钮 -->
         <template #menuBtn>
           <van-icon class="menu-icon" name="wap-nav" @click="drawerOpen" />
         </template>
-        <!-- 搜索框 -->
         <template #searchBox>
           <van-search
             class="search-input"
@@ -16,22 +13,18 @@
             @click="toSearch"
           />
         </template>
-        <!-- 听歌识曲Icon -->
         <template #songIcon>
           <svg-icon class="songSvg" iconName="songIcon"></svg-icon>
         </template>
       </SearchVue>
     </header>
-    <main>
-      <!-- 轮播图 -->
+    <main style="margin-top:1.6rem">
       <BannerVue></BannerVue>
     </main>
     <footer>
-      <!-- 快速入口 -->
       <FasteEnterVue></FasteEnterVue>
     </footer>
 
-    <!-- 左侧弹出 -->
     <van-popup
       v-model:show="showLeft"
       position="left"
@@ -42,9 +35,10 @@
         <div class="userInfo" @click="goLogin">
           <div class="userPic">
             <!-- <svg-icon iconName="notLogin" class="notLogin" ></svg-icon> -->
-            <img :src="$store.userPicUrl" alt="" class="headerPic" />
+            <img v-if="$store.isLogin" :src="$store.userPicUrl" alt="" class="headerPic" />
           </div>
-          <span class="username">{{$store.userName}}</span>
+          <span v-if="$store.isLogin"  class="username">{{$store.userName}}</span>
+          <span v-else @click="$router.push('/login')">立即登录</span>
           <van-icon name="arrow" />
         </div>
         <svg-icon iconName="sweep" class="sweep-icon"></svg-icon>
@@ -99,11 +93,13 @@ import { showConfirmDialog } from 'vant';
 import { showLoadingToast } from 'vant';
 import { getAPIdata } from '../../server/api';
 import {useStore} from '../../store/index'
+import {showFailToast } from 'vant';
 const $store = useStore()
 // 搜索关键字存储
-const searchValue = ref('');
+const searchValue = ref<string>('');
 // 个人中心抽屉的显示
-const showLeft = ref(false);
+const showLeft = ref<boolean>(false);
+
 // 抽屉开关函数
 const drawerOpen = () => {
   showLeft.value = true;
@@ -117,15 +113,21 @@ const toSearch = () => {
 };
 
 // 注销
-const loginOut = async () => {
-  const logout = await getAPIdata('GET', '/logout');
+const loginOut = () => {
+  let cook = sessionStorage.getItem('loginCookie')
+  if(cook == null){
+    showFailToast('请先登录');
+    return 
+  }
+  
   showConfirmDialog({
-    title: '标题',
+    title: '提示',
     message: '确定退出当前账号吗？',
   })
     .then(() => {
-      localStorage.removeItem('loginCookie');
-      localStorage.removeItem('userID');
+      const logout = getAPIdata('GET', '/logout');
+      sessionStorage.removeItem('loginCookie');
+      sessionStorage.removeItem('userID');
       showLoadingToast({
         message: '加载中...',
         forbidClick: true,
@@ -139,7 +141,12 @@ const loginOut = async () => {
     .catch(() => {});
 };
 onMounted(()=>{
-  
+  const cookie = sessionStorage.getItem('loginCookie')
+  if(cookie){
+    $store.isLogin = true
+  }else{
+     $store.isLogin = false
+  }
 })
 </script>
 <style lang="less">
@@ -147,16 +154,20 @@ onMounted(()=>{
 .box {
   .menu-icon {
     font-size: 0.7rem;
-    color: #fff;
+    color: #000;
   }
   .searchCom {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    background-color: #fff;
     margin-bottom: 0.25rem;
-    background-color: #da4036;
-    padding: 0.2rem 0.25rem;
-
+    padding: 0.3rem 0.25rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1111;
+    width: 95%;
     .search-input {
       background-color: transparent;
       font-size: 0.1rem;
@@ -177,8 +188,8 @@ onMounted(()=>{
     padding: 0 0.25rem;
   }
   .songSvg {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
   // 左侧弹出

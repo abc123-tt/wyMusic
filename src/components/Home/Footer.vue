@@ -13,7 +13,7 @@
             :iconName="index === flag ? `white-${item.normalIcon}` : `grey-${item.normalIcon}`"
           ></svg-icon>
         </div>
-        <p>{{ item.tit }}</p>
+        <!-- <p>{{ item.tit }}</p> -->
       </li>
     </ul>
   </div>
@@ -31,21 +31,22 @@ const data = reactive({
       normalIcon: "discovery",
       tit: "发现",
     },
-    // {
-    //   id: 2,
-    //   normalIcon: "podcast",
-    //   tit: "播客",
-    // },
     {
+      id: 2,
+      normalIcon: "podcast",
+      tit: "MV",
+    },
+     {
       id: 3,
+      normalIcon: "attention",
+      tit: "歌手",
+    },
+    {
+      id: 4,
       normalIcon: "my",
       tit: "我的",
     },
-    // {
-    //   id: 4,
-    //   normalIcon: "attention",
-    //   tit: "关注",
-    // },
+   
     // {
     //   id: 5,
     //   normalIcon: "community",
@@ -64,34 +65,37 @@ const changeItem = (i,str) => {
   if(str == '发现'){
     router.push('/discovery')
   }
-  if(str == '播客'){
+  if(str == 'MV'){
     router.push('/podcast')
+  }
+  
+  if(str == '歌手'){
+    router.push('/attention')
   }
   if(str == '我的'){
     router.push('/mine')
+    
   }
-  if(str == '关注'){
-    router.push('/attention')
-  }
-  if(str == '社区'){
-    router.push('/community')
-  }
+  // if(str == '社区'){
+  //   router.push('/community')
+  // }
 
 };
 onMounted(()=>{
-  //  window.location.pathname:获取当前路由地址
   const navBarActive = window.location.pathname
   if(navBarActive == '/discovery'){
     flag.value = 0
   }else if(navBarActive == '/podcast'){
     flag.value = 1
-  }else if(navBarActive == '/mine'){
-    flag.value = 2
   }else if(navBarActive == '/attention'){
-    flag.value = 3
-  }else if(navBarActive == '/community'){
-    flag.value = 4
+    flag.value = 2
   }
+  else if(navBarActive == '/mine'){
+    flag.value = 3
+  }
+  // else if(navBarActive == '/community'){
+  //   flag.value = 4
+  // }
 })
 </script>
 <style lang="less" scoped>
@@ -105,7 +109,7 @@ onMounted(()=>{
     display: flex;
     justify-content: space-around;
     border-top: 1px solid #eee;
-    padding: 0.1rem 0;
+    padding: 0.4rem 0;
     // border: 1px solid red;
     .listItem {
       width: 25%;
@@ -121,8 +125,12 @@ onMounted(()=>{
         justify-content: center;
         align-items: center;
         .itemIcon {
-          width: 0.65rem;
-          height: .65rem;
+          width: 0.75rem;
+          height: .75rem;
+          &:nth-child(2){
+            width: 2rem;
+            height: 2rem;
+          }
         }
       }
       p{
@@ -130,7 +138,7 @@ onMounted(()=>{
 
       }
       .active {
-        background-color: #fb2d4c;
+        background-color: transparent;
       }
     }
   }

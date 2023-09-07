@@ -49,6 +49,8 @@
 
 </template>
 <script setup lang='ts'>
+
+
 </script>
 <style lang='less'>
 .fast {

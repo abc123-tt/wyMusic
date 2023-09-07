@@ -11,7 +11,6 @@
 import { useRoute } from "vue-router";
 import {useStore} from './store/index'
 import PlayVue from "./components/item/Play.vue";
-// import LoadingVue from './components/Home/Loading.vue'
 const route = useRoute();
 const $store = useStore()
 </script>
@@ -19,10 +18,10 @@ const $store = useStore()
 .defStyle {
   position: fixed;
   left: 0;
-  bottom: 1.64rem;
+  bottom: 1.6rem;
   width: 100%;
-  }
-  .otherStyle {
+}
+.otherStyle {
   position: fixed;
   left: 0;
   bottom: -3px;

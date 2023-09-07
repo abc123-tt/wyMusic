@@ -73,9 +73,7 @@ const back = () => {
 onMounted(async () => {
  useStore().playPosition = true
   // 获取接口数据
-  const {
-    query: { id },
-  } = useRoute();
+  const {query: { id },} = useRoute();
   // console.log(id);
   
   const res = await getAPIdata("GET", `/playlist/detail?id=${id}`);
@@ -127,7 +125,7 @@ onMounted(async () => {
   }
 }
 .changebgc{
-  background-color: #fc473c;
+  background-color: #346ced;
   transition: all .2s ease-in;
 }
 </style>

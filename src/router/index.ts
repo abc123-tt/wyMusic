@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory,createWebHashHistory } from "vue-router";
 import {useStore} from '../store/index'
 
 // 这个RouterRecordRaw规定了必须要传入一个path和components
@@ -6,7 +6,7 @@ const routes = [
   {
     path:"/",
     name:"home",
-    redirect:"/login",
+    redirect:"discovery",
     component:()=>import("../components/Home/Home.vue"),
     children:[
       {
@@ -14,27 +14,27 @@ const routes = [
         name:'discovery',
         component:()=>import("../components/Home/Discovery.vue")
       },
-      // {
-      //   path:'podcast',
-      //   name:'podcast',
-      //   component:()=>import('../components/Home/PodCast.vue')
-      // },
+      {
+        path:'podcast',
+        name:'podcast',
+        component:()=>import('../components/Home/PodCast.vue')
+      },
       {
         path:'mine',
         name:'mine',
         component:()=>import('../components/Home/Mine.vue')
       },
-      // {
-      //   path:'attention',
-      //   name:'attention',
-      //   component:()=>import('../components/Home/Attention.vue')
+      {
+        path:'attention',
+        name:'attention',
+        component:()=>import('../components/Home/Attention.vue')
         
-      // },
-      // {
-      //   path:'community',
-      //   name:'community',
-      //   component:()=>import('../components/Home/Community.vue')
-      // },
+      },
+      {
+        path:'community',
+        name:'community',
+        component:()=>import('../components/Home/Community.vue')
+      },
     ]
   },
   {
@@ -65,6 +65,11 @@ const routes = [
     name:'login',
     component:()=>import('../components/Login.vue')
   },
+  {
+    path:'/mv',
+    name:'mv',
+    component:()=>import('../views/MV.vue')
+  },
 ]
 
 
@@ -72,19 +77,28 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-router.beforeEach((to,from,next)=>{
+// router.beforeEach((to,from,next)=>{
+//   const $store = useStore()
+//   if(to.path == '/mine'){
+//     const cookie = sessionStorage.getItem('loginCookie')
+//     if(!cookie) return next('/login')
+//     next()
+//   }
+//   if(to.path ==  '/login'){
+//     $store.isPlayCom = false
+//     next()       
+//   }else{
+//     $store.isPlayCom = true
+//     next()
+//   }
+// })
+router.beforeEach(to=>{
   const $store = useStore()
-  if(to.path ==  '/login'){
+  if(to.path == '/login') {
     $store.isPlayCom = false
-    next()       
   }else{
-    const cookie = sessionStorage.getItem('loginCookie')
     $store.isPlayCom = true
-    if(!cookie) return next('/login')
-    next()
   }
-  
-  
 })
 
 export default router

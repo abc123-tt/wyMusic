@@ -33,7 +33,7 @@
       :width="350"
     >
       <van-swipe-item
-        v-for="(item,index) in data.rankData"
+        v-for="(item,index) in data.newData"
         :key="index"
         class="swipeItem"
       >
@@ -43,7 +43,10 @@
             <img :src="musicItem.picUrl" alt="" class="newPic">
             <div class="musicInfo">
               <strong class="musicName">{{musicItem.name}}</strong>
-              <p class="singer" v-for="ar in musicItem.song.artists" :key="ar"><span class="vip" v-if="musicItem.song.fee != 8">VIP</span>{{ar.name}}</p>
+              <p class="singer" >
+                <span class="vip" v-if="musicItem.song.fee != 8">VIP</span>
+                <span v-for="ar in musicItem.song.artists" :key="ar">{{ar.name}}&emsp;</span>
+              </p>
             </div>
             <van-icon name="like-o" class="likeIcon"/>
           </li>
@@ -51,6 +54,7 @@
       </van-swipe-item>
     </van-swipe>
   </div>
+  <div class="line"></div>
 </template>
 <script setup lang='ts'>
 import { getAPIdata } from "../../server/api";
@@ -59,29 +63,28 @@ import { Swipe, SwipeItem } from "vant";
 import {useStore} from '../../store/index'
 const $store = useStore()
 const data = reactive({
-  rankData: {
+  newData: {
     newMusic1: [],
     newMusic2: [],
     newMusic3: [],
   },
 });
-const isLike = ref<boolean>(true)
 
-const getDJ = async () => {
+const getNewMusic = async () => {
   const res = await getAPIdata(
     "GET",
     "/personalized/newsong"
   );
-  data.rankData.newMusic1 = res.data.result.slice(0,3)
-  data.rankData.newMusic2 = res.data.result.slice(3,6)
-  data.rankData.newMusic3 = res.data.result.slice(6,9)
+  data.newData.newMusic1 = res.data.result.slice(0,3)
+  data.newData.newMusic2 = res.data.result.slice(3,6)
+  data.newData.newMusic3 = res.data.result.slice(6,9)
   
 };
 const playSong = (item,index)=>{
   $store.play(item,index)
 }
 onMounted(() => {
-  getDJ();
+  getNewMusic();
 });
 </script>
 <style lang='less' scoped>
@@ -106,13 +109,6 @@ onMounted(() => {
     }
   }
   .my-swipe {
-    /deep/.van-swipe__track {
-      margin-right: .7rem !important;
-      box-sizing: border-box;
-      &:last-child{
-        margin-right: none !important;
-      }
-    }
     .newMusicList{
       .listItem{
         display: flex;
@@ -139,6 +135,7 @@ onMounted(() => {
             font-weight: 700;
             color: #3d424b;
             margin-bottom: .2rem;
+            padding: .1rem 0;
           }
           .singer{
             color: #999;
@@ -159,5 +156,11 @@ onMounted(() => {
       }
     }
   }
+}
+.line{
+  width: 100%;
+  height: 0.5px;
+  background-color: #eee;
+  margin: .3rem 0;
 }
 </style>

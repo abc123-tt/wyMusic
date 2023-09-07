@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <keep-alive>
+    <div class="container">
     <div class="searchCom">
       <font-awesome-icon
         class="toBack"
@@ -12,8 +13,9 @@
         clearable="true"
         ref="myInput"
         @clear="onClear"
+        @keydown.enter.stop="searchMusic"
       />
-      <span class="searFont">搜索</span>
+      <span class="searFont" @click="searchMusic">搜索</span>
     </div>
     <!-- 搜索结果歌曲列表 -->
     <div class="card" v-if="data.songsList.length > 0">
@@ -38,6 +40,7 @@
               name="play-circle-o"
               v-if="item.mv != 0"
               class="play-icon"
+              @click="playMV(item.mv)"
             />
             <font-awesome-icon class="more-icon" icon="ellipsis-vertical" />
           </div>
@@ -48,42 +51,81 @@
       <van-empty description="暂时无版权" />
     </div>
   </div>
+  </keep-alive>
+  <div
+    class="loadingBox"
+    v-if="isLoading"
+  >
+
+    <van-loading
+      color="#fff"
+      class="loadingIcon"
+      size="60px"
+      vertical
+      type="spinner"
+    >加载中...</van-loading>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../store/index';
+import {getAPIdata} from '../../server/api'
+import { showNotify } from 'vant';
 import SearchComVue from '../../views/SearchCom.vue';
 const $store = useStore();
 const $route = useRoute();
 const $router = useRouter();
 
 const myInput = ref(null);
-const keyValue  =ref<string>()
+const keyValue =ref<string>()
+const isLoading = ref<boolean>(false);
 const data = reactive<Object<T>>({
   songsList: [],
 });
-// 清除输入框时返回搜索页
+
 const onClear = () => {
   $router.push('/search');
 };
 
-// 播放一首歌曲
 const playSong = (item,index)=>{
   $store.play(item,index);
 }
-// 播放全部歌曲
 const playAll = ()=>{
-   $store.setAllSongs(data.songsList); 
-   $store.play()
+   $store.play(data.songsList,0)
 }
 
+const searchMusic = async()=>{
+  const keyWord = keyValue.value.trim();
+  if (keyWord === '' || keyWord == ' ') {
+    showNotify({ type: 'danger', message: '请输入内容', duration: 2000 });
+    keyValue.value = '';
+    return false;
+  }
+  const res = await getAPIdata(
+    'GET',
+    `/cloudsearch?keywords=${keyValue.value}`
+  );
+  data.songsList = res.data.result.songs;
+}
+// 跳转到mv页面
+const playMV = (mvId) => {
+  isLoading.value = true;
+  let timer = null;
+  setTimeout(() => {
+    $router.push({
+      path: "/mv",
+      query: {
+        id: mvId,
+      },
+    });
+  }, 1500);
+  clearTimeout(timer);
+};
 onMounted(() => {
   $store.playPosition = true
   data.songsList = $store.searchList;
   keyValue.value = $store.searchKeyWord
-  
-  
 
   setTimeout(() => {
     myInput.value.focus();
@@ -96,6 +138,7 @@ onMounted(() => {
   background-color: #f6f6f6;
   padding: 0.3rem;
   height: 100vh;
+  box-sizing: border-box;
   .searchCom {
     display: flex;
     justify-content: space-between;
@@ -163,9 +206,9 @@ onMounted(() => {
           justify-content: center;
           .songsName {
             padding: 0.15rem 0;
-            font-size: 0.37rem;
+            font-size: 0.5rem;
             font-family: '黑体';
-            font-weight: 400;
+            color: #000;
           }
           .isVip {
             display: inline-block;
@@ -197,5 +240,19 @@ onMounted(() => {
 .empty {
   width: 100%;
   height: 100vh;
+}
+.loadingBox {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  height: 100vh;
+  z-index: 1111111;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .loadingIcon {
+    position: absolute;
+    top: 9rem;
+    left: 4.3rem;
+  }
 }
 </style>
