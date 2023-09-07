@@ -215,7 +215,7 @@ onMounted(async () => {
     }
   }
   .search {
-    font-size: 0.4rem;
+    font-size: 0.8rem;
     font-family: '宋体';
     font-weight: 700;
   }
